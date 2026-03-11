@@ -1262,17 +1262,21 @@ li {
 
 .lane-snapshot-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  align-items: start;
 }
 
 .lane-snapshot-card {
   border: 1px solid var(--line);
   border-radius: 18px;
-  padding: 16px;
+  padding: 18px;
   background: rgba(255, 255, 255, 0.56);
   display: grid;
-  gap: 10px;
+  gap: 14px;
+  align-content: start;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .lane-snapshot-recommended {
@@ -1280,10 +1284,17 @@ li {
 }
 
 .lane-snapshot-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
   align-items: flex-start;
+}
+
+.lane-snapshot-header h4 {
+  margin: 6px 0 0;
+  font-size: 1.25rem;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 
 .lane-snapshot-export {
@@ -1293,6 +1304,7 @@ li {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  white-space: nowrap;
 }
 
 .lane-snapshot-deterministic {
@@ -1320,14 +1332,29 @@ li {
   margin: 0;
 }
 
+.lane-snapshot-card p,
+.lane-snapshot-card li {
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
 .lane-snapshot-status {
   margin: 0;
   font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.35;
 }
 
 .lane-snapshot-fit {
-  padding-top: 8px;
+  padding-top: 12px;
   border-top: 1px solid rgba(31, 36, 48, 0.08);
+}
+
+.lane-snapshot-card .response-bullets {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
 }
 
 .feedback-panel {
@@ -2135,12 +2162,138 @@ body {
 .action-status,
 .shortcut-hint,
 .bridge-copy {
-  color: var(--muted) !important;
+  color: #aeb6c7 !important;
 }
 
 .mini-label,
 .panel-label {
-  color: #a5b4fc;
+  color: #c7d2fe !important;
+}
+
+body,
+.card,
+.table-card,
+.source-browser,
+.result-summary-line,
+.inset-card > p:not(.mini-label),
+.subsurface > p:not(.mini-label),
+.prompt-group-note,
+.routing-editor-lane-meta,
+.routing-editor-helper,
+.history-meta,
+.summary-note,
+.feedback-entry-note p,
+.narrative-line,
+.source-meta-card p,
+.hero-sublede,
+.bridge-copy,
+.quickstart-note,
+.grouped-panel-note,
+.section-supporting-copy,
+.response-output p,
+.compare-card p,
+.lane-card p,
+.card li,
+.card ol,
+.card ul,
+.dense-list,
+.response-bullets,
+.mono-flow,
+table,
+th,
+td {
+  color: #e5e7eb !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+strong,
+.result-metric h4,
+.history-card h4,
+.summary-card h4,
+.scenario-card h4,
+.compare-card h4,
+.lane-card h3,
+.prompt-group h4,
+.routing-editor-lane h4 {
+  color: #f8fafc !important;
+}
+
+.section-nav a,
+.demo-mode-toggle,
+.button-secondary,
+.toggle-button,
+.prompt-pill,
+.source-tab,
+.request-input,
+.routing-editor-input,
+select.routing-editor-input,
+textarea.request-input {
+  color: #f3f4f6 !important;
+}
+
+.request-input::placeholder,
+.routing-editor-input::placeholder {
+  color: #9aa4b2 !important;
+}
+
+.toggle-button.active,
+.button-primary {
+  color: #ffffff !important;
+}
+
+.result-metric,
+.subsurface,
+.inset-card,
+.prompt-group,
+.routing-editor-row,
+.summary-card,
+.history-card,
+.scenario-card,
+.review-context-card,
+.narrative-card,
+.rule-card,
+.source-meta-card,
+.feedback-log-summary-card,
+.feedback-entry-card {
+  background: rgba(22, 27, 34, 0.98) !important;
+}
+
+.result-metric .mini-label,
+.subsurface .mini-label,
+.inset-card .mini-label,
+.history-card .mini-label,
+.summary-card .mini-label,
+.scenario-card .mini-label,
+.rule-card .mini-label,
+.data-panel .mini-label,
+.audit-summary-card .mini-label,
+.feedback-fact .mini-label {
+  color: #cbd5e1 !important;
+}
+
+.mini-pre,
+.audit-pre,
+.history-receipt,
+.source-text,
+pre code,
+code {
+  color: #f8fafc !important;
+}
+
+.source-text mark,
+mark {
+  background: rgba(245, 158, 11, 0.9) !important;
+  color: #111827 !important;
+}
+
+.data-flow-indicator p,
+.history-empty p:last-child,
+.source-search-status,
+.supporting-note {
+  color: #b8c1d1 !important;
 }
 
 .result-metric-highlight,
