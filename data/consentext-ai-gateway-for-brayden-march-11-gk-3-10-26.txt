@@ -1,0 +1,230 @@
+Consentext AI Gateway – Prototype Guide for Brayden (Codex) – Detailed
+Purpose
+This document is for Brayden to build the next prototype iteration of the Consentext AI Gateway using Codex.
+The objective is to produce a denser, more useful prototype that helps the team understand the Gateway as a real system concept.
+This is not a final architecture implementation.
+It is a concept-clarifying prototype.
+
+Primary Prototype Goal
+The prototype should simulate the Gateway as a policy and routing layer between health context and AI.
+It should help the team understand:
+what the gateway controls
+how lane routing works
+how one user request can lead to different kinds of AI interaction
+how data exposure changes by lane
+why this concept may become strategically important
+
+Recommended Core Flow
+User Request ↓Gateway Classification ↓Trust / Exposure Logic ↓Lane Selection ↓Processing Mode ↓Response ↓Audit Receipt
+This should be the backbone of the prototype.
+
+The Gateway’s Three Jobs
+The prototype should reinforce that the Gateway does three things:
+1. Classifies the request
+What is the user trying to do?
+2. Applies trust / exposure rules
+How much AI access and data exposure is appropriate?
+3. Routes the request
+Which lane should handle this?
+That is the concept.
+
+Lanes to Build Into the Prototype
+1. Deterministic
+Use for
+trends
+calculations
+timelines
+structured data views
+non-AI summaries
+Prototype behavior
+no LLM call
+deterministic response or generated mock calculation
+explicit label that no AI was used
+Team takeaway
+Not everything needs AI.
+
+2. Private
+Use for
+explaining personal lab data
+interpreting personal record context
+describing personal patterns in plainer language
+Internal model example
+Use Qwen to conceptually represent the internal lane.
+Whether it is fully running or partially simulated is secondary to making the lane visible and believable.
+Prototype behavior
+clearly marked as protected lane
+no external context export
+internal processing path visible
+Team takeaway
+AI can help without immediately exposing sensitive health data externally.
+
+3. Private+
+Use for
+reduced-context questions
+behavior and habit suggestions
+general guidance derived from a smaller packet
+Prototype behavior
+The system should show:
+the richer underlying data source
+the reduced packet created by the gateway
+only the reduced packet being used externally
+Example packet
+Age: 54Sex: MaleLDL: 168HDL: 40Triglycerides: 210
+Team takeaway
+The gateway can do meaningful minimization work.
+
+4. Max Intelligence
+Use for
+broad comparison
+treatment research
+more open-ended exploration
+strongest external AI mode
+Prototype behavior
+broader outside AI mode
+visibly different from Private and Private+
+user should understand that this is the most capable lane
+Team takeaway
+Consentext can preserve user freedom without stepping out of the interaction entirely.
+
+Off-Board Mode
+The prototype should include or at least visually represent the off-board path.
+This can be shown as:
+User → External AI directly
+This matters because the prototype should help the team understand what Consentext loses when the gateway is bypassed.
+Suggested explanatory points:
+no audit
+no minimization
+no route control
+no protected lane
+no Consentext guardrails
+
+Suggested Prototype Components
+Codex can approach this however is easiest, but conceptually the prototype should contain components such as:
+Request Input
+A simple place to enter or choose a user request.
+Gateway Classifier
+A visible layer that determines the lane.
+Lane Display
+A way to show:
+selected lane
+explanation for the selection
+exposure level
+Data Packet Display
+Especially for Private+ and Max Intelligence, show what data is being used or sent.
+Response Area
+The output from the selected path.
+Audit Record
+A generated receipt or log of the interaction.
+This can be lightweight, but it should be visible.
+
+Suggested Example Requests
+Use a dense enough set that the team can see the range.
+Deterministic
+Show my cholesterol trend
+Show biomarker changes over six months
+List missing measurements from last quarter
+Generate timeline of recent labs
+Private
+Explain my lab results
+Summarize what changed in my wearable metrics
+Help me understand this pattern in my health data
+Explain this medical record in plain English
+Private+
+What lifestyle changes might improve these labs?
+What habits are associated with these numbers?
+What non-diagnostic improvements should I explore?
+What general factors may influence this pattern?
+Max Intelligence
+Compare treatments for high LDL
+Compare research directions for this issue
+Summarize broader approaches discussed in current literature
+Compare alternative intervention categories
+
+Simple Routing Logic
+A simple rules-based router is good enough for the prototype.
+Example pattern
+Deterministic keywords / intent
+trend
+timeline
+chart
+summarize data
+calculate
+list
+Private keywords / intent
+explain my labs
+explain my record
+interpret my data
+summarize my health info
+Private+ keywords / intent
+lifestyle changes
+habits
+general recommendations
+improve these numbers
+Max Intelligence keywords / intent
+compare treatments
+research
+studies
+literature
+broader options
+This does not need to be perfect.It just needs to be understandable and demonstrative.
+
+Suggested Audit Record Format
+The prototype should create a structured audit object such as:
+{  "timestamp": "...",  "request": "...",  "lane": "...",  "used_internal_model": true,  "external_export": false,  "provider": "Qwen / external / none",  "notes": "..."}
+Or a visible UI card that shows the same information.
+The purpose is to reinforce that the Gateway is about governance, not just output.
+
+How to Use Qwen in the Prototype
+Qwen is included here because the team wants an internal model example and because it helps make the Private lane concrete.
+Qwen should represent:
+internal inference
+protected AI
+“inside the wall” behavior
+Qwen should not be treated as:
+the definition of the whole gateway
+proof that one model choice solves the whole system
+the center of the architecture
+It is one lane example.
+
+How This Prototype Should Feel
+The prototype should feel like:
+a routing and control experience
+a gateway deciding exposure
+a protected system mediating AI use
+It should not feel like:
+just another generic health chatbot
+one AI assistant with labels slapped on top
+a vague demo with no visible control logic
+The user or team member should be able to feel that the Gateway is doing real conceptual work.
+
+Questions This Prototype Should Help Answer
+Does the gateway feel necessary?
+Do the lanes feel intuitive and distinct?
+Does the Private lane feel compelling enough to justify future investment?
+Does the minimization concept in Private+ feel believable and useful?
+Does Max Intelligence feel like a valuable option rather than a policy failure?
+Does the off-board contrast strengthen the argument for Consentext?
+Does the team begin to see how the gateway could evolve into a broader context engine later?
+
+What to Avoid
+Do not over-focus on:
+perfect UI polish
+final compliance mechanics
+final API stack
+full agent architecture
+final model ranking
+final vendor strategy
+The point is to make the Gateway concept dense, visible, and testable.
+
+Recommended End State
+By the end of this prototype round, the team should be able to say:
+we understand what the gateway is
+we understand how it differs from the vault
+we understand how the lanes work
+we understand why Consentext should remain in front of AI interaction
+we know what parts feel strongest and what still needs refinement
+That is a successful prototype outcome.
+
+Closing Instruction
+Build this prototype to teach the system concept back to the founders and team.
+If the prototype makes the gateway easier to understand, then it is doing its job.

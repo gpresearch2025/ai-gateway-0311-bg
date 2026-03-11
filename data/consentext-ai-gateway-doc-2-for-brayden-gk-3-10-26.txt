@@ -1,0 +1,310 @@
+Consentext AI Gateway – Operational Prototype Brief for Brayden (Codex)
+Purpose
+This brief is for Brayden to build the next prototype iteration of the Consentext AI Gateway using Codex.
+The objective is to create a denser and more operational prototype that demonstrates the gateway as a real system concept, not just a theoretical diagram.
+This prototype should help the team test and refine:
+lane routing logic
+data exposure differences
+internal vs external AI behavior
+audit behavior
+whether the gateway feels strategically real
+
+Core Framing
+The prototype should reflect this model:
+User ↓Vault ↓AI Gateway ↓Lane Selection ↓Processing ↓Response ↓Audit Receipt
+The Vault is the source of health context.
+The Gateway is the control layer.
+The prototype focus is the Gateway, not the entire product.
+
+Prototype Objectives
+Objective 1 — Build a believable control layer
+The prototype should make the gateway feel like it is doing real work:
+classifying requests
+applying rules
+routing intelligently
+changing data exposure by lane
+Objective 2 — Make routing logic inspectable
+Because Brayden is using Codex, it would be valuable if the prototype makes the routing logic easier to inspect and reason about.
+That means:
+explicit task categories
+explicit routing rules
+visible lane mapping
+visible output from the classifier
+Objective 3 — Demonstrate lane-specific data handling
+The prototype should clearly show:
+internal structured data only
+protected internal AI
+reduced packet
+broader external path
+Objective 4 — Use Qwen to anchor the Private lane
+The prototype should use Qwen as the internal-model example so the protected lane feels concrete.
+Objective 5 — Help the founders decide what they like
+The prototype should not only function.It should expose choices so the team can decide:
+which lane framing works best
+what feels strong
+what feels vague
+what needs refinement
+
+Must-Have Behaviors
+1. Free-text request input
+A user should be able to enter a request in natural language.
+2. Request classification result
+The system should display:
+interpreted task type
+selected lane
+why that lane was chosen
+3. Lane-specific execution mode
+Each lane should have visibly different behavior.
+4. Data scope display
+The prototype should show what level of data is available in the selected lane.
+5. Audit receipt
+Every interaction should generate a receipt or log.
+6. Off-board comparison
+There should be a visual or explanatory path showing what happens when the user bypasses Consentext.
+
+Nice-to-Have Behaviors
+1. Rule inspector
+Since Codex is good for structured logic, a view showing the classification / routing rule would be very helpful.
+2. Editable routing table
+Allow the team to tweak or inspect:
+keywords
+intent categories
+lane outputs
+3. Compare recommended lane vs alternate lane
+For example:
+recommended lane: Private+
+possible alternate: Max Intelligence
+reason for recommendation
+4. Context packet visualizer
+Show how the gateway transforms richer health context into a smaller packet.
+5. Reusable test suite panel
+A menu of preset prompts that can be run quickly.
+
+Suggested System Components
+A. Request Input
+Natural-language prompt input.
+B. Classifier Module
+Outputs:
+task category
+selected lane
+rationale
+C. Lane Controller
+Changes how the request is handled.
+D. Data Scope Panel
+Shows:
+vault context available
+context actually used
+external export yes/no
+E. Response Output
+Displays the simulated or real response.
+F. Audit Receipt
+Shows the recorded interaction metadata.
+G. Optional Rule Inspector
+Displays how the route was chosen.
+
+Recommended Lane Behaviors
+Lane 1 — Deterministic
+Meaning
+No LLM or external AI needed.
+Should handle
+trend requests
+calculations
+timeline requests
+structured summarization
+missing-data checks
+Prototype behavior
+deterministic or mocked structured output
+no model call
+visibly labeled as “No AI”
+Example output style
+Table, bullet summary, timeline, stats panel
+
+Lane 2 — Private
+Meaning
+Sensitive personal health data stays inside the protected boundary, but AI helps explain it.
+Should handle
+explain my lab results
+summarize my recent changes
+interpret this pattern in plain language
+explain this record to me
+Internal model example
+Qwen
+Prototype behavior
+clearly indicate internal lane
+no external export
+provider shown as Qwen or protected internal model
+output should feel explanatory, not advisory
+
+Lane 3 — Private+
+Meaning
+The gateway generates a minimized packet and uses external AI on that smaller packet.
+Should handle
+lifestyle improvement questions
+habit questions
+general improvement guidance
+broad non-diagnostic recommendations
+Prototype behavior
+show original context
+show reduced packet
+show external processing on reduced packet
+show export flag = yes, reduced only
+Example reduced packet
+Age: 54Sex: MaleLDL: 168HDL: 40Triglycerides: 210
+
+Lane 4 — Max Intelligence
+Meaning
+Broader governed external AI interaction.
+Should handle
+compare treatments
+compare interventions
+summarize broader research themes
+explore open-ended medical reasoning questions
+Prototype behavior
+clearly mark highest-capability lane
+broader context exposure than Private+
+still routed through gateway
+still audited
+
+Off-Board Representation
+Include a separate non-governed path:
+User → External AI directly
+Explain that off-board means:
+no routing
+no context minimization
+no audit
+no Consentext boundary
+no protection layer
+This contrast matters because it sharpens the value of the gateway.
+
+Sample Routing Table
+Use this as a working baseline.
+Prompt Pattern
+Task Category
+Recommended Lane
+Notes
+show trend / timeline / chart
+structured retrieval
+Deterministic
+no AI needed
+summarize my labs
+protected explanation
+Private
+internal AI
+explain this health pattern
+protected explanation
+Private
+internal AI
+what lifestyle changes help
+reduced-context guidance
+Private+
+minimized packet
+what habits influence these results
+reduced-context guidance
+Private+
+minimized packet
+compare treatments
+broad comparison
+Max Intelligence
+broader governed AI
+review research on this topic
+research exploration
+Max Intelligence
+broader governed AI
+This can evolve later, but it is a useful prototype baseline.
+
+Sample Test Prompts
+Deterministic
+Show my LDL trend over the last year
+Build a timeline of my most recent lab results
+List my HDL values by date
+Show changes in triglycerides over time
+Identify missing biomarkers from my last two lab panels
+Private
+Explain my latest lab results in plain English
+Summarize what changed in my recent biomarkers
+Help me understand this pattern in my health data
+Explain what stands out in my recent wearable metrics
+Interpret this personal health snapshot
+Private+
+What lifestyle changes might improve these labs?
+What habits are associated with healthier LDL and HDL levels?
+Based on these biomarkers, what general improvements should I explore?
+What non-diagnostic steps are commonly discussed for this pattern?
+What general changes might support better lipid health?
+Max Intelligence
+Compare treatments for persistently high LDL
+Compare medication and lifestyle approaches for this pattern
+Summarize current research themes related to cholesterol management
+Compare intervention categories and care pathways
+Explore broader options commonly discussed for this biomarker pattern
+Off-board comparison
+I pasted my full medical record into ChatGPT directly
+This can be represented as a visual warning or contrast state.
+
+Recommended Audit Receipt Format
+A structured card or JSON-like object is fine.
+{  "timestamp": "2026-03-10T09:20:00",  "request": "What lifestyle changes might improve these labs?",  "task_category": "reduced-context guidance",  "selected_lane": "Private+",  "data_scope": "reduced context packet",  "external_export": true,  "provider": "external AI",  "notes": "Minimum necessary packet generated by gateway"}
+For Deterministic:
+provider can be “none”
+external_export = false
+For Private:
+provider can be “Qwen”
+external_export = false
+
+Codex-Specific Guidance
+Because Brayden is using Codex, lean into what Codex is especially good at:
+structured logic
+modular routing rules
+inspectable logic paths
+deterministic behavior
+clean prototype scaffolding
+repeatable test prompts
+This makes Codex well-suited for:
+request classifiers
+routing tables
+packet transformation logic
+audit record generation
+inspectable prototype behavior
+Brayden’s prototype can be especially strong if it makes the decision logic legible.
+That is a major advantage.
+
+Suggested Prototype Modes
+If feasible, consider letting the prototype run in two modes.
+Mode 1 — Recommended Route
+The gateway chooses the lane and explains why.
+Mode 2 — Compare Route
+The system shows:
+recommended lane
+next likely alternative lane
+why the recommendation was made
+This would help the founders understand whether the routing intuition feels right.
+
+What Success Looks Like
+This prototype is successful if the team can look at it and say:
+I see the gateway making decisions
+I see why one prompt lands in Private and another in Private+
+I see how Qwen fits into the internal lane
+I see how minimization works
+I see why auditability belongs in the gateway
+I see how off-board weakens protection
+I can now react to the concept much more concretely
+
+What to Avoid
+Avoid turning the prototype into:
+just a prettier chatbot
+a one-lane assistant
+a simple AI provider switcher
+an overbuilt infrastructure demo
+an attempt to solve final compliance architecture
+a medically overambitious diagnostic tool
+The goal is not perfect intelligence.The goal is visible governance.
+
+Closing Instruction for Brayden
+Build the prototype so the routing logic becomes tangible.
+The best outcome is a prototype where the founders can enter a prompt and clearly see:
+how the gateway interpreted it
+what lane it selected
+what data scope it allowed
+whether anything was exported
+what got logged
+That is how the concept becomes real.

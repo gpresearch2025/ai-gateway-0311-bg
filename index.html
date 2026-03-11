@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consentext AI Gateway</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Consentext | Governed AI Infrastructure</p>
+        <h1>AI Gateway</h1>
+        <p class="lede">
+          The operating layer that lets health AI become useful without forcing users into an all-or-nothing privacy
+          tradeoff.
+        </p>
+        <p class="hero-sublede">
+          This prototype shows how Consentext can classify requests, control exposure, route work to the right lane,
+          and keep an auditable boundary between personal health context and AI systems.
+        </p>
+        <div class="hero-proof-strip">
+          <div class="hero-proof-card">
+            <span class="mini-label">Core claim</span>
+            <strong>Privacy and intelligence do not have to be mutually exclusive.</strong>
+          </div>
+          <div class="hero-proof-card">
+            <span class="mini-label">What investors are seeing</span>
+            <strong>A control layer, not another chatbot wrapper.</strong>
+          </div>
+          <div class="hero-proof-card">
+            <span class="mini-label">Demo focus</span>
+            <strong>Routing, minimization, auditability, and trust design.</strong>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <a href="#prototype" class="button button-primary">Open the live demo</a>
+          <a href="#overview" class="button button-secondary">Read the investment story</a>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <p class="panel-label">Investor framing</p>
+        <p class="panel-quote">
+          Consentext is positioning the gateway as trust infrastructure for health AI: the product layer that decides
+          what can stay internal, what can be minimized, what can be exported, and what should never leave the user
+          boundary.
+        </p>
+        <div class="hero-panel-list">
+          <div>
+            <span class="mini-label">Why it matters</span>
+            <p>It turns privacy from a product constraint into a routing advantage.</p>
+          </div>
+          <div>
+            <span class="mini-label">What is differentiated</span>
+            <p>Lane-based governance, reduced packets, and audit receipts in one product narrative.</p>
+          </div>
+          <div>
+            <span class="mini-label">What the demo proves</span>
+            <p>The system can make visible trust decisions, not just generate answers.</p>
+          </div>
+        </div>
+      </aside>
+    </header>
+
+    <nav class="section-nav">
+      <a href="#overview">Overview</a>
+      <a href="#system">System</a>
+      <a href="#lanes">Lanes</a>
+      <a href="#routing">Routing</a>
+      <a href="#prototype">Prototype</a>
+      <a href="#sources">Sources</a>
+      <button id="demo-mode-toggle" class="demo-mode-toggle" type="button" aria-pressed="false">Demo mode: Off</button>
+    </nav>
+
+    <main>
+      <section id="prototype" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Interactive prototype</p>
+          <h2>Run the gateway and inspect what it does</h2>
+        </div>
+        <div id="demo-walkthrough-card" class="card demo-walkthrough-card">
+          <div class="split-heading">
+            <div>
+              <p class="eyebrow">Investor demo sequence</p>
+              <h3>Three points to prove in the first two minutes</h3>
+            </div>
+            <p class="supporting-note">Shown only in demo mode</p>
+          </div>
+          <div class="demo-walkthrough-grid">
+            <div class="demo-walkthrough-step">
+              <span class="mini-label">1. Control layer</span>
+              <p>Show that the gateway classifies the request before any model interaction happens.</p>
+            </div>
+            <div class="demo-walkthrough-step">
+              <span class="mini-label">2. Trust boundary</span>
+              <p>Use compare mode to show why one lane stays internal while another requires a reduced export packet.</p>
+            </div>
+            <div class="demo-walkthrough-step">
+              <span class="mini-label">3. Proof of governance</span>
+              <p>End on the audit receipt, narrative panel, and scenario framing to show this is product infrastructure, not just UX.</p>
+            </div>
+          </div>
+        </div>
+        <div class="prototype-grid prototype-primary-grid">
+          <article class="card prototype-input-card">
+            <div class="split-heading">
+              <div>
+                <h3>Request input</h3>
+                <p>Enter a request or click a canonical test prompt from the documents.</p>
+              </div>
+              <div class="mode-toggle" role="group" aria-label="Prototype mode">
+                <button id="mode-recommended" class="toggle-button active" type="button" aria-pressed="true">Recommended route</button>
+                <button id="mode-compare" class="toggle-button" type="button" aria-pressed="false">Compare route</button>
+              </div>
+            </div>
+            <div id="session-status" class="session-status"></div>
+            <label class="field-label" for="request-input">User request</label>
+            <textarea id="request-input" class="request-input" rows="5">What lifestyle changes might improve these lab results?</textarea>
+            <div class="prototype-actions">
+              <button id="run-prototype" class="button button-primary" type="button">Run gateway</button>
+              <button id="clear-prototype" class="button button-secondary" type="button">Reset</button>
+              <button id="copy-link" class="button button-secondary" type="button">Copy share link</button>
+              <button id="export-session" class="button button-secondary" type="button">Export session</button>
+              <button id="import-session" class="button button-secondary" type="button">Import session</button>
+              <button id="reset-all" class="button button-secondary" type="button">Reset all state</button>
+            </div>
+            <input id="import-session-input" type="file" accept="application/json" hidden>
+            <div class="prototype-meta">
+              <p id="action-status" class="action-status" aria-live="polite">Ready.</p>
+              <p class="shortcut-hint">Shortcuts: Ctrl/Cmd+Enter run, Shift+D demo mode, Shift+C copy link.</p>
+            </div>
+            <div class="prompt-bank">
+              <div class="prompt-bank-header">
+                <h4>Preset prompt bank</h4>
+                <p>Shared canon prompts from the source docs.</p>
+              </div>
+              <div id="prompt-bank-summary" class="prompt-bank-summary"></div>
+              <div id="prompt-bank" class="prompt-groups"></div>
+            </div>
+          </article>
+
+          <article class="card prototype-output-card">
+            <div class="section-heading compact-heading">
+              <p class="eyebrow">Gateway output</p>
+              <h3>Classification and lane result</h3>
+            </div>
+            <div id="result-summary" class="result-summary">
+              <p class="mini-label">Decision summary</p>
+              <p class="result-summary-line">The gateway is routing this request into a governed lane.</p>
+            </div>
+            <div class="result-banner">
+              <div class="result-metric result-metric-primary">
+                <p class="mini-label">Task category</p>
+                <h4 id="task-category">Reduced-context guidance</h4>
+              </div>
+              <div class="result-metric result-metric-highlight">
+                <p class="mini-label">Selected lane</p>
+                <h4 id="selected-lane">Private+</h4>
+              </div>
+              <div class="result-metric">
+                <p class="mini-label">Provider</p>
+                <h4 id="selected-provider">External AI</h4>
+              </div>
+              <div class="result-metric">
+                <p class="mini-label">External export</p>
+                <h4 id="external-export">Yes</h4>
+              </div>
+              <div class="result-metric">
+                <p class="mini-label">Confidence</p>
+                <h4 id="classification-confidence">0.91</h4>
+              </div>
+            </div>
+            <div class="grid two-up prototype-panels">
+              <div class="card inset-card">
+                <p class="mini-label">Exposure decision</p>
+                <p id="exposure-decision">Awaiting gateway classification for the current request.</p>
+              </div>
+              <div class="card inset-card">
+                <p class="mini-label">Processing mode</p>
+                <p id="processing-mode">The gateway will set the processing mode after routing.</p>
+              </div>
+              <div class="card inset-card">
+                <p class="mini-label">Why this lane</p>
+                <p id="lane-rationale">Run the prototype to see the governing rationale for the selected lane.</p>
+              </div>
+              <div class="card inset-card">
+                <p class="mini-label">Canonical message</p>
+                <p id="canonical-message">The lane-specific system message will appear here after routing.</p>
+              </div>
+              <div class="card inset-card">
+                <p class="mini-label">Data scope</p>
+                <p id="data-scope">The gateway will show how much user context this lane is allowed to use.</p>
+              </div>
+              <div class="card inset-card">
+                <p class="mini-label">Alternate lane</p>
+                <p id="alternate-lane">An alternate lane is shown when the request is close to another governed route.</p>
+              </div>
+            </div>
+            <div class="grid two-up prototype-panels">
+              <div class="card inset-card">
+                <p class="mini-label">Compare route view</p>
+                <div id="compare-route" class="compare-route"></div>
+              </div>
+              <div class="card inset-card">
+                <p class="mini-label">Gateway control jobs</p>
+                <ul id="gateway-jobs" class="dense-list">
+                  <li>Waiting for the gateway to load its control responsibilities.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="grid two-up prototype-panels">
+              <div class="card inset-card">
+                <p class="mini-label">Vault context available</p>
+                <ul id="vault-context" class="dense-list">
+                  <li>Available after the prototype loads.</li>
+                </ul>
+              </div>
+              <div class="card inset-card">
+                <p class="mini-label">Context used by this lane</p>
+                <ul id="context-used" class="dense-list">
+                  <li>Will be populated by the selected route.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="grid two-up prototype-panels">
+              <div class="card inset-card">
+                <p class="mini-label">Richer Vault context</p>
+                <pre id="vault-packet" class="mini-pre">Waiting for route execution.</pre>
+              </div>
+              <div class="card inset-card">
+                <p class="mini-label">Export packet</p>
+                <pre id="export-packet" class="mini-pre">No packet generated yet.</pre>
+              </div>
+              <div class="card inset-card full-span">
+                <p class="mini-label">Simulated response</p>
+                <div id="response-output" class="response-output">
+                  <p>The lane-specific simulated response appears here after the gateway runs.</p>
+                </div>
+              </div>
+            </div>
+            <div class="grid two-up prototype-panels">
+              <div class="card inset-card">
+                <p class="mini-label">Execution trace</p>
+                <ol id="execution-trace" class="dense-list">
+                  <li>Waiting for the gateway to classify the current request.</li>
+                </ol>
+              </div>
+              <div class="card inset-card">
+                <p class="mini-label">Team takeaway</p>
+                <p id="team-takeaway">The summary takeaway updates once a governed lane has been selected.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="prototype-grid secondary-grid">
+          <article class="card" id="rule-inspector-card">
+            <div class="split-heading">
+              <div>
+                <p class="eyebrow">Inspectable logic</p>
+                <h3>Rule inspector</h3>
+              </div>
+              <p class="supporting-note">Built from the shared routing canon and the Brayden prototype briefs.</p>
+            </div>
+            <div id="rule-inspector" class="rule-stack"></div>
+          </article>
+          <article class="card" id="history-card">
+            <p class="eyebrow">Audit</p>
+            <h3>Interaction receipt</h3>
+            <div id="audit-summary" class="audit-summary"></div>
+            <pre id="audit-receipt" class="audit-pre"></pre>
+          </article>
+          <article class="card warning-card">
+            <p class="eyebrow">Contrast state</p>
+            <h3>Off-board consequence</h3>
+            <ul id="offboard-warning" class="dense-list"></ul>
+          </article>
+        </div>
+
+        <div class="prototype-grid">
+          <article class="card" id="routing-editor-card">
+            <div class="split-heading">
+              <div>
+                <p class="eyebrow">Session log</p>
+                <h3>Interaction history</h3>
+              </div>
+              <div class="history-actions">
+                <button id="export-history" class="button button-secondary" type="button">Export history</button>
+                <button id="clear-history" class="button button-secondary" type="button">Clear history</button>
+              </div>
+            </div>
+            <div id="history-log" class="history-log"></div>
+          </article>
+        </div>
+
+        <div class="prototype-grid">
+          <article class="card" id="gap-audit-card">
+            <div class="split-heading">
+              <div>
+                <p class="eyebrow">Route editor</p>
+                <h3>Editable routing table</h3>
+              </div>
+              <div class="history-actions">
+                <p class="supporting-note">Adjust lane keywords and immediately re-run the gateway.</p>
+                <button id="export-routing-rules" class="button button-secondary" type="button">Export rules</button>
+                <button id="import-routing-rules" class="button button-secondary" type="button">Import rules</button>
+                <button id="restore-routing-rules" class="button button-secondary" type="button">Restore default rules</button>
+                <input id="import-routing-rules-input" type="file" accept="application/json" hidden>
+              </div>
+            </div>
+            <div id="routing-editor" class="routing-editor"></div>
+          </article>
+        </div>
+
+        <div class="prototype-grid">
+          <article class="card" id="future-notes-card">
+            <div class="split-heading">
+              <div>
+                <p class="eyebrow">Lane compare</p>
+                <h3>Same request across all lanes</h3>
+              </div>
+              <p class="supporting-note">Use this to inspect how the gateway framing changes by lane for the current request.</p>
+            </div>
+            <div id="lane-snapshot-grid" class="lane-snapshot-grid"></div>
+          </article>
+        </div>
+
+        <div class="prototype-grid">
+          <article class="card" id="team-questions-card">
+            <div class="split-heading">
+              <div>
+                <p class="eyebrow">Founder review</p>
+                <h3>Capture what feels strong or weak</h3>
+              </div>
+              <div class="history-actions">
+                <button id="export-feedback" class="button button-secondary" type="button">Export feedback</button>
+                <button id="clear-feedback" class="button button-secondary" type="button">Clear feedback</button>
+              </div>
+            </div>
+            <div id="review-context" class="review-context"></div>
+            <div id="feedback-panel" class="feedback-panel"></div>
+            <div id="feedback-log" class="history-log"></div>
+          </article>
+        </div>
+
+        <div class="prototype-grid">
+          <article class="card">
+            <div class="split-heading">
+              <div>
+                <p class="eyebrow">Scenario pack</p>
+                <h3>Founder-ready walkthrough scenarios</h3>
+              </div>
+              <p class="supporting-note">Use these to demo why the gateway exists and how the lanes differ.</p>
+            </div>
+            <div id="scenario-pack" class="scenario-pack"></div>
+          </article>
+        </div>
+
+        <div class="prototype-grid">
+          <article class="card">
+            <div class="split-heading">
+              <div>
+                <p class="eyebrow">Founder summary</p>
+                <h3>Lane sentiment rollup</h3>
+              </div>
+              <p class="supporting-note">Aggregated from the founder review log.</p>
+            </div>
+            <div id="feedback-summary" class="feedback-summary"></div>
+          </article>
+        </div>
+
+        <div class="prototype-grid">
+          <article class="card">
+            <div class="split-heading">
+              <div>
+                <p class="eyebrow">Presenter narrative</p>
+                <h3>Talk track for the current decision</h3>
+              </div>
+              <p class="supporting-note">Use this as the spoken explanation during a walkthrough.</p>
+            </div>
+            <div id="narrative-panel" class="narrative-panel"></div>
+          </article>
+        </div>
+
+        <div class="prototype-grid secondary-grid">
+          <article class="card">
+            <p class="eyebrow">Gap audit</p>
+            <h3>What I missed in the first version</h3>
+            <ul id="gap-audit" class="dense-list"></ul>
+          </article>
+          <article class="card">
+            <p class="eyebrow">Forward look</p>
+            <h3>Future boundary and context engine notes</h3>
+            <ul id="future-notes" class="dense-list"></ul>
+          </article>
+          <article class="card">
+            <p class="eyebrow">Team questions</p>
+            <h3>What this prototype should help answer</h3>
+            <ul id="team-questions" class="dense-list"></ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="overview" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Why this exists</p>
+          <h2>The gateway is a control system, not another AI feature</h2>
+        </div>
+        <div class="grid two-up">
+          <article class="card">
+            <h3>Executive summary</h3>
+            <p>
+              Consentext is trying to give users more than two bad choices: no AI at all, or direct disclosure into an
+              external model. The AI Gateway sits between the Vault and AI systems so requests can be classified, routed,
+              minimized, and audited.
+            </p>
+          </article>
+          <article class="card">
+            <h3>What it does</h3>
+            <ul>
+              <li>Classifies the request.</li>
+              <li>Applies trust and exposure logic.</li>
+              <li>Routes the request to the right lane.</li>
+              <li>Preserves control with minimization and auditability.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>What it is not</h3>
+            <ul>
+              <li>Not just a chatbot.</li>
+              <li>Not only a model router or API layer.</li>
+              <li>Not a final compliance architecture.</li>
+              <li>Not a replacement for model providers.</li>
+            </ul>
+          </article>
+          <article class="card accent-card">
+            <h3>Best mental model</h3>
+            <p class="stacked-phrase">The Vault stores.</p>
+            <p class="stacked-phrase">The Gateway governs.</p>
+            <p class="stacked-phrase">The AI reasons.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="system" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">System framing</p>
+          <h2>Consentext has three conceptual spaces</h2>
+        </div>
+        <div class="system-layout">
+          <div class="flow-pill">User</div>
+          <div class="flow-arrow">→</div>
+          <div class="system-boxes">
+            <article class="card compact">
+              <h3>Vault</h3>
+              <p>User-owned health context: biomarkers, lab history, wearables, nutrition, fitness, uploaded records, and longitudinal patterns.</p>
+            </article>
+            <article class="card compact">
+              <h3>Health Portal</h3>
+              <p>Clinical sharing and coordination with doctors, clinics, hospitals, and health systems. Separate from AI usage.</p>
+            </article>
+            <article class="card compact highlight">
+              <h3>AI Gateway</h3>
+              <p>The governed layer that decides how AI can interact with health context without sacrificing control.</p>
+            </article>
+          </div>
+        </div>
+        <div class="card diagram-card">
+          <h3>Canonical flow</h3>
+          <p class="mono-flow">User Request → Gateway Classification → Exposure Decision → Lane Selection → Processing → Response → Audit Record</p>
+        </div>
+      </section>
+
+      <section id="lanes" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Exposure spectrum</p>
+          <h2>Four governed lanes plus one contrast state</h2>
+        </div>
+        <div class="spectrum">
+          <span>Most private</span>
+          <div class="spectrum-bar"></div>
+          <span>Most AI power</span>
+        </div>
+        <div class="lane-grid">
+          <article class="lane-card lane-deterministic">
+            <p class="lane-index">Lane 1</p>
+            <h3>Deterministic</h3>
+            <p>No AI. Structured retrieval, timelines, calculations, thresholds, missing-data checks, and templated summaries.</p>
+            <ul>
+              <li>Provider: `none` / deterministic engine</li>
+              <li>Export: no external export</li>
+              <li>Role: trust anchor</li>
+            </ul>
+          </article>
+          <article class="lane-card lane-private">
+            <p class="lane-index">Lane 2</p>
+            <h3>Private</h3>
+            <p>Protected AI explanation inside Consentext. Personal labs, records, and patterns stay inside the boundary.</p>
+            <ul>
+              <li>Provider: `Qwen` / protected internal AI</li>
+              <li>Export: no external export</li>
+              <li>Role: highest-privacy AI lane</li>
+            </ul>
+          </article>
+          <article class="lane-card lane-privateplus">
+            <p class="lane-index">Lane 3</p>
+            <h3>Private+</h3>
+            <p>External AI can be used only after the gateway generates a minimized packet with the minimum necessary context.</p>
+            <ul>
+              <li>Provider: reduced-context external AI</li>
+              <li>Export: reduced packet only</li>
+              <li>Role: adoption bridge</li>
+            </ul>
+          </article>
+          <article class="lane-card lane-max">
+            <p class="lane-index">Lane 4</p>
+            <h3>Max Intelligence</h3>
+            <p>Broader governed external AI for open-ended comparisons, research exploration, and stronger capability.</p>
+            <ul>
+              <li>Provider: governed external AI</li>
+              <li>Export: broader governed context may be allowed</li>
+              <li>Role: preserves user freedom</li>
+            </ul>
+          </article>
+          <article class="lane-card lane-offboard">
+            <p class="lane-index">Contrast state</p>
+            <h3>Off-Board</h3>
+            <p>The user bypasses Consentext and goes directly to an external AI tool. No routing, no minimization, no audit.</p>
+            <ul>
+              <li>Provider: direct external AI</li>
+              <li>Export: unmanaged disclosure</li>
+              <li>Role: strategic contrast case</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="routing" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Routing canon</p>
+          <h2>Baseline rules, prompt bank, and audit model</h2>
+        </div>
+        <div class="grid two-up">
+          <article class="card">
+            <h3>Routing principles</h3>
+            <ol>
+              <li>If structured internal logic is enough, use Deterministic.</li>
+              <li>If explaining sensitive personal context, use Private.</li>
+              <li>If general guidance can work from minimized data, use Private+.</li>
+              <li>If the request is comparative, broader, or research-oriented, use Max Intelligence.</li>
+              <li>If the user bypasses Consentext, classify it as Off-Board.</li>
+            </ol>
+            <p class="supporting-note">Tie-break rule: default toward the more private lane when a prompt is ambiguous.</p>
+          </article>
+          <article class="card">
+            <h3>Canonical reduced packet</h3>
+            <div class="packet">
+              <p>Age: 54</p>
+              <p>Sex: Male</p>
+              <p>LDL: 168</p>
+              <p>HDL: 40</p>
+              <p>Triglycerides: 210</p>
+              <p>Relevant pattern: elevated LDL and triglycerides</p>
+            </div>
+            <p class="supporting-note">Store a lot, send a little.</p>
+          </article>
+        </div>
+
+        <div class="table-card">
+          <h3>Heuristic routing table</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Prompt pattern</th>
+                <th>Interpretation</th>
+                <th>Lane</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="routing-table-placeholder">
+                <td colspan="3">Routing rules load from the prototype logic.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid three-up">
+          <article class="card compact">
+            <h3>Deterministic prompts</h3>
+            <ul id="deterministic-prompts-list"></ul>
+          </article>
+          <article class="card compact">
+            <h3>Private prompts</h3>
+            <ul id="private-prompts-list"></ul>
+          </article>
+          <article class="card compact">
+            <h3>Private+ prompts</h3>
+            <ul id="privateplus-prompts-list"></ul>
+          </article>
+          <article class="card compact">
+            <h3>Max Intelligence prompts</h3>
+            <ul id="maxintelligence-prompts-list"></ul>
+          </article>
+          <article class="card compact">
+            <h3>Off-Board prompts</h3>
+            <ul id="offboard-prompts-list"></ul>
+          </article>
+          <article class="card compact">
+            <h3>Audit schema</h3>
+            <ul>
+              <li>Required: timestamp, request, task_category, selected_lane, data_scope, external_export, provider, notes.</li>
+              <li>Optional: export_packet_type, minimization_applied, trust_mode, alternate_lane_considered, classification_confidence.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="grid two-up">
+          <article class="card code-card">
+            <h3>Canonical audit example</h3>
+            <pre><code>{
+  "timestamp": "2026-03-10T09:10:00",
+  "request": "What lifestyle changes might improve these lab results?",
+  "task_category": "reduced-context guidance",
+  "selected_lane": "Private+",
+  "data_scope": "reduced context packet",
+  "external_export": true,
+  "provider": "external AI",
+  "notes": "Minimum necessary packet generated by gateway"
+}</code></pre>
+          </article>
+          <article class="card">
+            <h3>Alignment rules from the canon</h3>
+            <ul>
+              <li>Use the exact lane names: Deterministic, Private, Private+, Max Intelligence, Off-Board.</li>
+              <li>Use Qwen as the internal-model example for Private.</li>
+              <li>Use the same audit fields across prototypes.</li>
+              <li>Use the shared prompt set for baseline testing.</li>
+              <li>Do not drift into alternate lane definitions unless explicitly testing one.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="prototype-brief" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Prototype brief</p>
+          <h2>What the next build should demonstrate</h2>
+        </div>
+        <div class="grid three-up">
+          <article class="card">
+            <h3>Objectives</h3>
+            <ul>
+              <li>Make the gateway feel like a believable control layer.</li>
+              <li>Make routing logic inspectable and easy to reason about.</li>
+              <li>Show lane-specific data handling.</li>
+              <li>Anchor the Private lane with Qwen.</li>
+              <li>Expose choices so founders can react to them.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Must-have behavior</h3>
+            <ul>
+              <li>Free-text request input.</li>
+              <li>Visible classification result and rationale.</li>
+              <li>Lane-specific execution behavior.</li>
+              <li>Data scope display.</li>
+              <li>Audit receipt on every interaction.</li>
+              <li>Off-board comparison state.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Nice-to-have behavior</h3>
+            <ul>
+              <li>Rule inspector.</li>
+              <li>Editable routing table.</li>
+              <li>Recommended lane vs alternate lane comparison.</li>
+              <li>Context packet visualizer.</li>
+              <li>Reusable prompt test suite panel.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Suggested components</h3>
+            <ul>
+              <li>Request input</li>
+              <li>Classifier module</li>
+              <li>Lane controller</li>
+              <li>Data scope panel</li>
+              <li>Response area</li>
+              <li>Audit receipt</li>
+              <li>Optional rule inspector</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Success looks like</h3>
+            <ul>
+              <li>The team can see why one prompt lands in Private and another in Private+.</li>
+              <li>Qwen feels concrete inside the protected lane.</li>
+              <li>Minimization and auditability feel real.</li>
+              <li>The off-board path sharpens the value of the gateway.</li>
+              <li>The concept becomes concrete enough to refine.</li>
+            </ul>
+          </article>
+          <article class="card warning-card">
+            <h3>What to avoid</h3>
+            <ul>
+              <li>Do not turn it into a prettier chatbot.</li>
+              <li>Do not collapse everything into one lane.</li>
+              <li>Do not overbuild final infrastructure.</li>
+              <li>Do not over-focus on compliance, vendor ranking, or final API stack yet.</li>
+              <li>Do not make it a diagnostic tool.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="sources" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Source archive</p>
+          <h2>Full extracted text from all four documents</h2>
+        </div>
+        <div class="card source-intro">
+          <p>
+            The tabs below load the raw text extracted from each `.docx` file in this folder. This keeps the page
+            readable up top while still exposing the full source material in one place.
+          </p>
+          <div class="source-search">
+            <label class="field-label" for="source-search-input">Search source text</label>
+            <input id="source-search-input" class="routing-editor-input" type="text" placeholder="Search across the loaded document text">
+            <p id="source-search-status" class="action-status">No source search active.</p>
+          </div>
+        </div>
+        <div class="source-browser card">
+          <div id="source-tabs" class="source-tabs" aria-label="Source documents"></div>
+          <div id="source-meta" class="source-meta"></div>
+          <div id="source-search-results" class="source-search-results"></div>
+          <pre id="source-text" class="source-text">Loading source documents...</pre>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./source-data.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

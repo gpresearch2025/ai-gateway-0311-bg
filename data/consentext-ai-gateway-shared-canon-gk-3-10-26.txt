@@ -1,0 +1,368 @@
+Consentext AI Gateway – Shared Routing Canon
+Authoritative Lane Dictionary, Prompt Set, and Audit Schema
+Purpose
+This document defines the common prototype language for the Consentext AI Gateway.
+Both prototype builders should use this as the shared reference so that:
+both prototypes reflect the same lane meanings
+both prototypes classify similar prompts similarly
+both prototypes use the same routing logic patterns
+both prototypes display the same audit concepts
+the founders can compare outputs more easily
+This is not the final production routing spec.
+This is the authoritative prototype canon for the next iteration.
+
+Section 1 – Core Gateway Definition
+Working Definition
+The Consentext AI Gateway is the governed interaction layer that determines how a user’s health context may be used with AI, routes each request through the appropriate privacy-capability lane, and preserves control through minimization, boundaries, and auditability.
+
+Gateway Core Responsibilities
+The Gateway has three core jobs:
+1. Classify the request
+Determine what kind of task the user is asking for.
+2. Apply exposure logic
+Determine what level of privacy, capability, and control is appropriate.
+3. Route the request
+Send the request to the correct lane.
+
+Canonical Flow
+User Request    ↓Gateway Classification    ↓Exposure Decision    ↓Lane Selection    ↓Processing    ↓Response    ↓Audit Record
+Both prototypes should preserve this conceptual flow.
+
+Section 2 – Authoritative Lane Dictionary
+This section defines the official prototype meaning of each lane.
+
+Lane 1 – Deterministic
+Canonical Name
+Deterministic
+Short Definition
+No AI is used. The system handles the request using structured logic, calculations, retrieval, thresholds, timelines, or templated summaries.
+Purpose
+This lane exists for tasks that do not require AI reasoning.
+Typical Task Types
+trend retrieval
+timeline generation
+structured summaries
+calculations
+threshold alerts
+missing-data surfacing
+list / table generation
+Example User Intent
+“Show my cholesterol trend”
+“List my lab values by date”
+“Show what changed over six months”
+Data Exposure
+internal only
+no external AI
+no external export
+Prototype Provider Label
+none
+deterministic engine
+internal structured logic
+Strategic Meaning
+This is the trust anchor.
+Canonical User Message
+“This request can be handled without AI.”
+
+Lane 2 – Private
+Canonical Name
+Private
+Short Definition
+AI is used internally, but sensitive personal health context stays inside the protected Consentext boundary.
+Purpose
+This lane exists for tasks where AI explanation is helpful, but raw sensitive context should not leave the protected environment.
+Typical Task Types
+explanation of personal labs
+explanation of personal records
+plain-English interpretation of personal health context
+summarization of sensitive health data
+understanding personal patterns without broad external export
+Example User Intent
+“Explain my lab results”
+“Help me understand what changed”
+“Summarize this health pattern for me”
+Data Exposure
+internal protected context only
+no external export
+Prototype Provider Label
+Qwen
+internal protected model
+protected internal AI
+Strategic Meaning
+This is the highest-privacy AI lane.
+Canonical User Message
+“This request uses protected internal AI. Sensitive data stays inside Consentext.”
+
+Lane 3 – Private+
+Canonical Name
+Private+
+Short Definition
+External AI may be used, but only after the gateway generates a reduced, minimum-necessary context packet.
+Purpose
+This lane exists for questions that benefit from broader AI assistance but do not require sharing the full protected context.
+Typical Task Types
+lifestyle improvement questions
+habit questions
+general guidance questions
+reduced-context support questions
+non-diagnostic improvement exploration
+Example User Intent
+“What lifestyle changes may improve these labs?”
+“What habits may affect this pattern?”
+“What general actions should I explore?”
+Data Exposure
+reduced packet only
+external export allowed in minimized form
+Prototype Provider Label
+external AI
+reduced-context AI
+minimized export AI
+Strategic Meaning
+This is the adoption bridge.
+Canonical User Message
+“This request uses a reduced context packet for external AI assistance.”
+
+Lane 4 – Max Intelligence
+Canonical Name
+Max Intelligence
+Short Definition
+Broader governed AI interaction is allowed for requests that require stronger external AI capability.
+Purpose
+This lane exists for open-ended, comparative, or research-oriented questions where broader AI capability is useful.
+Typical Task Types
+treatment comparison
+research comparison
+literature exploration
+broader option exploration
+open-ended comparative reasoning
+Example User Intent
+“Compare treatments for high LDL”
+“Summarize current research directions”
+“Compare intervention categories”
+Data Exposure
+broader governed export may be allowed
+still mediated by gateway
+Prototype Provider Label
+external AI
+high-capability AI
+governed external AI
+Strategic Meaning
+This preserves user freedom while keeping Consentext in front of the interaction.
+Canonical User Message
+“This request uses the highest-capability governed AI lane.”
+
+Off-Board
+Canonical Name
+Off-Board
+Short Definition
+The user bypasses Consentext and interacts directly with an outside AI system.
+Purpose
+This is not a governed lane. It is a contrast state.
+Example User Intent
+user opens ChatGPT directly
+user pastes medical records into Claude directly
+user leaves the Consentext environment
+Data Exposure
+uncontrolled by Consentext
+no gateway minimization
+no gateway audit
+no gateway routing
+Prototype Provider Label
+external AI direct
+unmanaged external AI
+Strategic Meaning
+This is the loss-of-control contrast case.
+Canonical User Message
+“You are now outside Consentext protections.”
+
+Section 3 – Authoritative Routing Logic
+This section defines the baseline routing patterns both prototypes should follow.
+These rules do not need to be perfect.They need to be consistent.
+
+Routing Principle 1
+If the request can be answered with structured internal logic, it should route to Deterministic.
+Routing Principle 2
+If the request asks AI to explain sensitive personal health context, it should route to Private.
+Routing Principle 3
+If the request asks for general improvement ideas or behavior suggestions that can work from minimized context, it should route to Private+.
+Routing Principle 4
+If the request is broader, comparative, research-oriented, or open-ended, it should route to Max Intelligence.
+Routing Principle 5
+If the user bypasses Consentext, the state is Off-Board, not a governed lane.
+
+Routing Heuristic Table
+Task Pattern
+Typical Interpretation
+Lane
+trend / timeline / list / calculate / show values
+structured retrieval
+Deterministic
+explain my labs / explain my record / summarize my results
+protected explanation
+Private
+what lifestyle changes / what habits / what general improvements
+reduced-context guidance
+Private+
+compare treatments / summarize research / broader options
+open-ended comparison or research
+Max Intelligence
+
+Routing Tie-Break Rule
+If a prompt seems ambiguous between two lanes:
+prefer more private if explanation is enough
+prefer Private+ over Max Intelligence if reduced context seems sufficient
+prefer Deterministic whenever AI is not needed
+This keeps the prototype aligned with the governance-first philosophy.
+
+Section 4 – Authoritative Prompt Set
+Both prototypes should include or test against this shared prompt set.
+This is the official prototype prompt bank.
+
+A. Deterministic Prompt Set
+Show my cholesterol trend over the last six months
+List my LDL and HDL values by date
+Build a timeline of my recent lab results
+Show how my triglycerides changed over time
+Identify missing biomarkers from my recent panels
+Generate a structured summary of my lipid history
+Show my wearable sleep score trend
+List my biomarker results from most recent to oldest
+Expected Lane
+Deterministic
+
+B. Private Prompt Set
+Explain my latest lab results in plain English
+Help me understand what changed in my biomarkers
+Summarize what stands out in my recent labs
+Explain this wearable trend in simple language
+Help me understand this personal health pattern
+Explain this record without giving treatment advice
+Summarize my recent results for me in simple terms
+Tell me what seems unusual in this lab snapshot
+Expected Lane
+Private
+
+C. Private+ Prompt Set
+What lifestyle changes might improve these lab results?
+What habits may affect this cholesterol pattern?
+Based on these biomarkers, what general improvements should I explore?
+What non-diagnostic steps are commonly associated with better results here?
+What general actions might support healthier lipid levels?
+What behavior changes are often linked to better numbers like these?
+What should I explore to improve this trend?
+What general wellness steps could be relevant to this pattern?
+Expected Lane
+Private+
+
+D. Max Intelligence Prompt Set
+Compare treatments for persistently high LDL
+Compare medication and lifestyle approaches for this pattern
+Summarize current research directions related to cholesterol management
+Compare intervention categories for this biomarker pattern
+Explore broader options commonly discussed for this issue
+Review research themes related to lipid management
+Compare common care pathways for this condition
+Summarize broader approaches discussed in the literature
+Expected Lane
+Max Intelligence
+
+E. Off-Board Contrast Set
+I pasted my full medical record directly into ChatGPT
+I uploaded my labs into Claude without using Consentext
+I left the platform and used an outside AI tool directly
+Expected State
+Off-Board
+
+Section 5 – Authoritative Reduced Context Packet
+Both prototypes should use a consistent example for minimized export behavior.
+This is especially important for Private+.
+
+Canonical Example Reduced Packet
+Age: 54Sex: MaleLDL: 168HDL: 40Triglycerides: 210Relevant pattern: elevated LDL and triglycerides
+Purpose
+This packet demonstrates the core gateway idea:
+store a lot, send a little
+Both prototypes should visibly distinguish between:
+Richer Vault Context
+Potentially includes:
+detailed lab history
+wearable data
+records
+notes
+full biomarker panels
+Reduced Export Context
+Only the minimum-necessary subset for the task.
+
+Section 6 – Authoritative Audit Schema
+Both prototypes should generate an audit record using the same field structure, even if the UI presentation differs.
+This is the official prototype audit schema.
+
+Canonical Audit Fields
+Required Fields
+timestamp
+request
+task_category
+selected_lane
+data_scope
+external_export
+provider
+notes
+Optional Fields
+export_packet_type
+minimization_applied
+trust_mode
+alternate_lane_considered
+classification_confidence
+
+Canonical Audit Record Example – Deterministic
+{  "timestamp": "2026-03-10T09:00:00",  "request": "Show my cholesterol trend over the last six months",  "task_category": "structured retrieval",  "selected_lane": "Deterministic",  "data_scope": "internal structured data",  "external_export": false,  "provider": "deterministic engine",  "notes": "No AI used"}
+
+Canonical Audit Record Example – Private
+{  "timestamp": "2026-03-10T09:05:00",  "request": "Explain my latest lab results in plain English",  "task_category": "protected explanation",  "selected_lane": "Private",  "data_scope": "internal protected context",  "external_export": false,  "provider": "Qwen",  "notes": "Sensitive data retained within Consentext boundary"}
+
+Canonical Audit Record Example – Private+
+{  "timestamp": "2026-03-10T09:10:00",  "request": "What lifestyle changes might improve these lab results?",  "task_category": "reduced-context guidance",  "selected_lane": "Private+",  "data_scope": "reduced context packet",  "external_export": true,  "provider": "external AI",  "notes": "Minimum necessary packet generated by gateway"}
+
+Canonical Audit Record Example – Max Intelligence
+{  "timestamp": "2026-03-10T09:15:00",  "request": "Compare treatments for persistently high LDL",  "task_category": "broader comparison",  "selected_lane": "Max Intelligence",  "data_scope": "broader governed context",  "external_export": true,  "provider": "external AI",  "notes": "High-capability governed AI lane selected"}
+
+Canonical Audit Record Example – Off-Board
+{  "timestamp": "2026-03-10T09:20:00",  "request": "I pasted my full medical record into ChatGPT directly",  "task_category": "off-board direct external AI use",  "selected_lane": "Off-Board",  "data_scope": "unmanaged external disclosure",  "external_export": true,  "provider": "external AI direct",  "notes": "Outside Consentext protections"}
+
+Section 7 – Shared Prototype Alignment Rules
+Both builders should follow these alignment rules.
+Rule 1
+Use the same lane names exactly:
+Deterministic
+Private
+Private+
+Max Intelligence
+Off-Board
+Rule 2
+Use Qwen as the internal-model example for the Private lane.
+Rule 3
+Use the canonical reduced packet example for Private+ unless a different minimized packet is needed for demonstration.
+Rule 4
+Use the canonical audit fields so the founders can compare outputs across prototypes.
+Rule 5
+Use the authoritative prompt set above for at least baseline testing.
+Rule 6
+Do not drift into alternate lane definitions unless explicitly noted as an experiment.
+Rule 7
+If ambiguous, default toward the more private lane.
+
+Section 8 – Questions the Shared Canon Should Help Answer
+This shared canon is meant to help the team answer:
+Do the lane definitions still feel right after prototype testing?
+Does Private feel meaningfully different from Private+?
+Does Qwen strengthen the concept of a protected internal lane?
+Does the reduced-packet concept feel believable?
+Does Max Intelligence feel useful without undermining the governance story?
+Does the audit record make the gateway feel more real?
+Does Off-Board strengthen the strategic argument for Consentext?
+
+Section 9 – Closing Guidance
+The purpose of this canon is not to lock the final product forever.
+It is to keep the next prototype round aligned enough that the founders can learn from both builds without confusion.
+The key thing to preserve is this:
+The gateway is the governed layer that decides how health context may interact with AI.
+Everything else in the prototype should reinforce that.

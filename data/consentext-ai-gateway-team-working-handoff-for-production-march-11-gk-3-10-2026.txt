@@ -1,0 +1,351 @@
+Consentext AI Gateway – Team Working Handoff 
+Purpose of This Document
+This document is the current working explanation of the Consentext AI Gateway.
+Its purpose is to help the internal team clearly understand what the AI Gateway is, what it is not, why it matters, how it relates to the Vault, and what should be explored in prototype form next.
+This is not yet a final engineering architecture document.This is also not a marketing document.
+This is a concept and decision document for the team.
+The goal is to give the team a strong enough mental model that everyone can:
+visualize the gateway clearly
+understand how it fits into Consentext
+see what is realistic to prototype now
+identify what feels right and what still feels unresolved
+make better decisions before the next round of technical scoping
+
+Executive Summary
+Consentext is not just trying to build another AI feature.
+Consentext is trying to define a governed interaction layer between a user’s health context and AI systems.
+That governed layer is what we are calling the AI Gateway.
+The Gateway exists because the user should not have only two choices:
+do not use AI at all
+paste sensitive health information directly into an outside AI system
+That binary is not acceptable for a health-focused product.
+Instead, Consentext introduces a graduated model of AI access, where different kinds of AI interactions happen in different lanes, with different levels of privacy, control, and capability.
+That is the role of the AI Gateway.
+
+The High-Level Consentext System
+The best way to understand the AI Gateway is to first understand that it is only one part of the broader Consentext system.
+Consentext has at least three conceptual spaces:
+USER  ↓CONSENTEXT SYSTEM  ├─ VAULT  ├─ HEALTH PORTAL  └─ AI GATEWAY
+1. Vault
+The Vault is the user-owned health data environment.
+The Vault is broader than AI.
+It may contain:
+biomarkers
+lab history
+wearable device metrics
+nutrition data
+fitness information
+uploaded records
+medical documents
+longitudinal health patterns
+future structured and unstructured health context
+The Vault is the protected home of the user’s health context.
+2. Health Portal
+The Health Portal is the system that enables users to share information from the Vault with:
+doctors
+clinics
+hospitals
+healthcare systems
+This pathway is separate from AI usage.
+The Health Portal is about clinical sharing and coordination.
+3. AI Gateway
+The AI Gateway is the system that governs how AI is allowed to interact with the user’s health context.
+This is not the same thing as the Vault.
+This is not the same thing as the Portal.
+This is the system that answers the question:
+How can the user benefit from AI without losing control of their health data?
+
+Why the AI Gateway Exists
+The AI Gateway exists because health data is too sensitive for a simple “AI on / AI off” model.
+Most consumer AI usage today looks like this:
+User → AI
+Or slightly better:
+User → App → AI
+But Consentext is trying to create something more responsible:
+User ↓Vault ↓Gateway ↓AI
+That middle layer is the point.
+The Gateway is the system that decides:
+what kind of request this is
+how sensitive the request is
+whether AI is needed at all
+whether the AI interaction should remain fully inside Consentext
+whether a reduced or de-identified packet can leave
+whether broader external AI usage is allowed
+what must be logged and auditable
+
+What the AI Gateway Is
+The AI Gateway is best understood as a governance layer and a control system.
+It is the part of Consentext that governs how health context is used with AI.
+In plain language:
+The AI Gateway decides:
+which lane a request belongs in
+what information is allowed to be used
+whether anything is allowed to leave Consentext
+what kind of AI interaction is appropriate
+how the interaction is recorded
+A simple one-line definition:
+The AI Gateway determines how a user request interacts with AI and what health context is allowed to be used or shared.
+
+What the AI Gateway Is Not
+This distinction is very important.
+At least right now, the AI Gateway is not:
+a prompt optimization engine
+a giant multi-model orchestration brain
+a system primarily focused on making AI as smart as possible
+a replacement for the model labs
+just a chat assistant
+just an API layer
+just a model router
+just a privacy policy wrapper
+Consentext is not trying to replace OpenAI, Anthropic, xAI, Google, Alibaba, or other model providers.
+Consentext is trying to become the trusted consumer-controlled layer that helps people use those systems responsibly with health context.
+
+Feature vs Control System
+One of the most important distinctions we uncovered in this session is the difference between a feature and a control system.
+A feature answers:
+What can the user do?
+Examples:
+explain my lab results
+summarize my health records
+compare treatments
+suggest lifestyle changes
+A control system answers:
+How is the system allowed to operate?
+That is the AI Gateway.
+The Gateway is not “the feature.”
+The Gateway governs how all AI-related features are allowed to behave.
+Another way to say it:
+A feature performs a task.A control system governs how tasks are allowed to be performed.
+That is why the Gateway matters so much.
+
+The Best Mental Model
+The most useful mental model so far is:
+The Vault stores.
+The Gateway governs.
+The AI reasons.
+That is a very helpful separation.
+
+The AI Exposure Spectrum
+The Gateway introduces multiple levels of AI exposure.
+Instead of one kind of AI interaction, there are several.
+MOST PRIVATE                                    MOST AI POWER|----------------------------------------------------------------|Deterministic → Private → Private+ → Max Intelligence
+And separately:
+OFF THE BOARD = User goes directly to outside AI without Consentext
+Each lane represents a different balance of:
+privacy
+capability
+control
+
+The AI Gateway Triangle
+Another helpful visual model is the triangle between:
+                PRIVACY                   /\                  /  \                 /    \                /      \               /        \        CONTROL --------- CAPABILITY
+Privacy
+How much sensitive health context remains inside Consentext.
+Capability
+How much AI reasoning and power the user can access.
+Control
+How strongly Consentext governs routing, redaction, boundaries, permissions, and approvals.
+The lanes exist because no single point on this triangle is always correct for every user request.
+
+The Four Lanes
+
+Lane 1 – Deterministic
+Definition
+No AI is used.
+This lane uses structured logic, calculations, timelines, thresholds, extraction rules, and templated outputs.
+Example requests
+Show my cholesterol trend
+List my recent lab dates
+Show my biomarker changes over six months
+Identify missing lab panels
+Show medication timeline
+Produce structured daily score summary
+What this lane means
+The system is not reasoning like an LLM.It is calculating, retrieving, and formatting.
+What leaves Consentext
+Nothing.
+Strategic role
+This is the trust anchor.
+It proves the system can create value without external AI exposure.
+Why it matters
+This lane gives users confidence that not every health question requires AI.
+It also creates a foundation for later trust in the more advanced lanes.
+
+Lane 2 – Private
+Definition
+AI is used, but the sensitive health record data stays inside Consentext-controlled systems.
+Example requests
+Explain my lab results
+Help me understand this pattern in my wearable data
+Summarize my recent biomarkers in plain English
+Explain this medical record in simpler language
+What this lane means
+AI can help, but it does so inside the protected environment.
+This is the “AI inside the wall” concept.
+Internal model example
+For prototype purposes, Qwen can be used as the example internal model.
+The point is not that Qwen defines the gateway.The point is that an internal model can help demonstrate what a protected-AI lane looks like.
+What leaves Consentext
+Sensitive data should not leave.
+Strategic role
+This is the highest-privacy AI lane.
+Why it matters
+This lane is essential because it gives the user AI help without forcing them into immediate external data exposure.
+
+Lane 3 – Private+
+Definition
+External AI may be used, but the gateway sends only reduced, minimal, or de-identified context.
+Example requests
+What lifestyle changes might improve these labs?
+What general interventions are associated with this pattern?
+What habits may affect these metrics?
+Example reduced context packet
+Instead of sending the full record:
+Age: 54Sex: MaleLDL: 168HDL: 40Triglycerides: 210
+The gateway should send only the minimum necessary context needed for the task.
+What this lane means
+The raw vault stays protected.A smaller, safer packet may travel.
+What leaves Consentext
+Only approved reduced context.
+Strategic role
+This is the adoption bridge.
+It gives the user meaningful AI support while still applying privacy guardrails.
+Why it matters
+This lane may become one of the most practically useful lanes in the entire system.
+
+Lane 4 – Max Intelligence
+Definition
+This lane allows the broadest external AI interaction.
+Example requests
+Compare treatment approaches
+Analyze research directions
+Compare competing health hypotheses
+Review general medical literature around these patterns
+What this lane means
+The user wants the strongest AI capability available.
+More context may be shared depending on user choice and system rules.
+What leaves Consentext
+Potentially broader context, subject to the gateway’s rules.
+Strategic role
+This preserves user freedom and keeps Consentext in front of the interaction.
+Why it matters
+Without this lane, Consentext may become too restrictive for users who want powerful external AI capability.
+
+Off-Board Interaction
+This is when the user bypasses Consentext and goes directly to a model lab UI.
+Examples:
+ChatGPT
+Claude
+Gemini
+other external AI chat tools
+What this means
+The user is no longer using Consentext’s protections.
+What Consentext loses
+routing control
+minimization
+redaction
+audit trail
+consent governance
+interaction boundary
+Why it matters
+This needs to be understood clearly because it may become one of the strongest arguments for why Consentext should exist at all.
+
+The Gateway Decision Flow
+The simplest conceptual flow is:
+User submits request        ↓Gateway identifies the task type        ↓Gateway applies trust / exposure rules        ↓Gateway selects the lane        ↓Lane executes the task        ↓Response returned        ↓Audit record created
+This is the current best simplification of the gateway’s role.
+
+Audit and Interaction Receipts
+Every gateway-mediated AI interaction should conceptually generate an audit record.
+Possible fields:
+timestamp
+user request
+lane used
+data accessed
+data exported
+AI provider used
+consent scope
+notes on redaction or minimization
+This matters because the gateway is not just about routing.It is also about traceability and proof of controlled use.
+
+Why the Gateway May Matter More Over Time
+Even if we do not force the narrative now, there is a reason the idea of the gateway becoming “the brain of the system” feels tempting.
+If the gateway eventually learns to:
+classify intent
+determine safe exposure levels
+manage human + agent + model interactions
+control context release
+mediate permissions
+maintain audit boundaries
+then it may evolve from being a policy router into something closer to a context engine.
+We should not force that conclusion yet.
+But it is a very reasonable future direction to keep in mind.
+
+Agents and the Future Boundary Problem
+One of the important forward-looking ideas discussed in this session is that future AI systems will increasingly include agents.
+If agents become part of the product or broader ecosystem, they must not access the Vault directly.
+The safer future pattern looks more like:
+Agent → Gateway → Vault
+Not:
+Agent → Vault
+This is one reason the gateway may become even more important over time.
+It is not just a human-to-AI routing layer.
+It may eventually become the permission boundary between:
+humans
+agents
+AI models
+health data
+
+Qwen and the Internal Model Discussion
+A team member raised Qwen as a possibly useful model for helping prove the concept.
+That is a reasonable idea.
+Where Qwen fits
+Qwen can be a strong prototype example for the Private lane.
+Why
+it helps demonstrate local or internal inference
+it supports the “AI inside the wall” idea
+it can reduce prototype dependence on outside commercial APIs
+it satisfies the conceptual need for a protected-AI lane
+Important note
+Qwen does not define the gateway architecture.
+It is just a useful model example that may sit inside one lane.
+The gateway design remains the same regardless of whether the internal model is Qwen, another open model, or a future internal setup.
+
+What the Team Should Decide Tonight
+The team should not try to answer every future architecture question tonight.
+Instead, the team should focus on a smaller set of concept questions.
+1. Do the lanes make intuitive sense?
+Deterministic
+Private
+Private+
+Max Intelligence
+Off-board
+2. Does the gateway feel like the correct control point?
+User → Vault → Gateway → AI
+3. Does this solve a meaningful real-world problem?
+Specifically:
+How can people use powerful AI with sensitive health data without losing control?
+4. Does the team agree that the gateway is a control system, not just a feature?
+5. Does the Private lane feel important enough to prototype with a model like Qwen?
+
+What the Team Should Not Overcomplicate Yet
+For now, the team should not get lost in:
+final model vendor strategy
+prompt engineering
+advanced agentic design
+final architecture specs
+production-grade compliance details
+final API routing stack
+full inference infrastructure
+Those can come later.
+Right now the task is to make the gateway concept real enough to understand, test, and refine.
+
+Working Definition to Carry Forward
+Here is the best current working definition:
+Consentext AI Gateway is the governed interaction layer that determines how a user’s health context can be used with AI, routes each request through the appropriate privacy-capability lane, and preserves control through minimization, boundaries, and auditability.
+
+Closing Thought
+The Vault is broader than AI.The Health Portal is broader than AI.The AI Gateway is specifically about governed AI interaction.
+If Consentext gets this right, it could become a uniquely valuable control layer in a world where AI grows more powerful, more agentic, and more embedded in personal decision-making.
+For now, the next step is not to overstate it.
+The next step is to understand it clearly enough to prototype it honestly.
