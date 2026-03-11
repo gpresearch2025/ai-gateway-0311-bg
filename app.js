@@ -28,6 +28,8 @@ const modeCompareButton = document.getElementById("mode-compare");
 const promptBank = document.getElementById("prompt-bank");
 const sessionStatusEl = document.getElementById("session-status");
 const promptBankSummaryEl = document.getElementById("prompt-bank-summary");
+const patientProfileSelect = document.getElementById("patient-profile");
+const trustPreferenceSelect = document.getElementById("trust-preference");
 
 const taskCategoryEl = document.getElementById("task-category");
 const selectedLaneEl = document.getElementById("selected-lane");
@@ -47,6 +49,7 @@ const vaultContextEl = document.getElementById("vault-context");
 const contextUsedEl = document.getElementById("context-used");
 const vaultPacketEl = document.getElementById("vault-packet");
 const exportPacketEl = document.getElementById("export-packet");
+const exportContextBadgeEl = document.getElementById("export-context-badge");
 const responseOutputEl = document.getElementById("response-output");
 const executionTraceEl = document.getElementById("execution-trace");
 const teamTakeawayEl = document.getElementById("team-takeaway");
@@ -84,6 +87,149 @@ const canonicalReducedPacket = [
   "Triglycerides: 210",
   "Relevant pattern: elevated LDL and triglycerides",
 ];
+
+const PATIENT_PROFILES = {
+  "rich-54m": {
+    label: "Rich Multi-Source (54M)",
+    demographics: { age: 54, sex: "Male" },
+    protectedContext: [
+      "Patient: 54-year-old Male",
+      "6 lab panels with dates: 2025-09, 2025-10, 2025-11, 2025-12, 2026-01, 2026-02",
+      "2025-09 panel: LDL 182, HDL 38, Triglycerides 226, Total Cholesterol 262",
+      "2025-10 panel: LDL 179, HDL 39, Triglycerides 221, Total Cholesterol 258",
+      "2025-11 panel: LDL 176, HDL 39, Triglycerides 218, Total Cholesterol 254",
+      "2025-12 panel: LDL 174, HDL 39, Triglycerides 219, Total Cholesterol 252",
+      "2026-01 panel: LDL 170, HDL 40, Triglycerides 214, Total Cholesterol 246",
+      "2026-02 panel: LDL 168, HDL 40, Triglycerides 210, Total Cholesterol 242",
+      "Wearable data: sleep scores 71-79, resting heart rate 62-68, step counts 6.2k-9.8k",
+      "Uploaded medical records, nutrition logs, and clinician notes remain inside Consentext",
+    ],
+    reducedPacket: [
+      "Age: 54",
+      "Sex: Male",
+      "LDL: 168",
+      "HDL: 40",
+      "Triglycerides: 210",
+      "Pattern: elevated LDL and triglycerides",
+    ],
+    broaderExport: [
+      "54M with 6-panel lipid trend summary",
+      "Latest panel: LDL 168, HDL 40, Triglycerides 210, Total Cholesterol 242",
+      "Wearable summary: sleep, resting HR, and steps",
+      "High-level record and medication context under governed export",
+    ],
+    contextUsedByLane: {
+      Deterministic: ["Lab panels by date", "Trend calculations", "Structured formatting rules"],
+      Private: ["Full lab pattern", "Wearable trends", "Records and notes retained internally"],
+      "Private+": ["Reduced biomarker packet only", "General wellness framing"],
+      "Max Intelligence": ["Broader trend summary", "High-level context under governed export"],
+      "Off-Board": ["User-disclosed context outside Consentext"],
+    },
+  },
+  "lab-47f": {
+    label: "Simple Lab-Only (47F)",
+    demographics: { age: 47, sex: "Female" },
+    protectedContext: [
+      "Patient: 47-year-old Female",
+      "4 lab panels with dates: 2025-10, 2025-12, 2026-01, 2026-02",
+      "2025-10 panel: LDL 154, HDL 46, Triglycerides 168, Total Cholesterol 228",
+      "2025-12 panel: LDL 151, HDL 47, Triglycerides 161, Total Cholesterol 223",
+      "2026-01 panel: LDL 149, HDL 47, Triglycerides 158, Total Cholesterol 219",
+      "2026-02 panel: LDL 146, HDL 48, Triglycerides 152, Total Cholesterol 214",
+      "No wearable data available",
+      "No uploaded records beyond standard lab reports",
+    ],
+    reducedPacket: [
+      "Age: 47",
+      "Sex: Female",
+      "LDL: 146",
+      "HDL: 48",
+      "Triglycerides: 152",
+      "Pattern: improving but still elevated LDL",
+    ],
+    broaderExport: [
+      "47F with 4 recent lipid panels",
+      "Latest panel: LDL 146, HDL 48, Triglycerides 152, Total Cholesterol 214",
+      "Lab-only profile with no wearable or broader record context",
+    ],
+    contextUsedByLane: {
+      Deterministic: ["Lab panels by date", "Structured retrieval only"],
+      Private: ["Full lab history inside Consentext"],
+      "Private+": ["Reduced lab-only packet"],
+      "Max Intelligence": ["Broader lab trend summary under governed export"],
+      "Off-Board": ["User-disclosed lab context outside Consentext"],
+    },
+  },
+  "wearable-38m": {
+    label: "Wearable-Heavy (38M)",
+    demographics: { age: 38, sex: "Male" },
+    protectedContext: [
+      "Patient: 38-year-old Male",
+      "2 lab panels with dates: 2025-11, 2026-02",
+      "2025-11 panel: LDL 132, HDL 49, Triglycerides 144, Total Cholesterol 208",
+      "2026-02 panel: LDL 136, HDL 47, Triglycerides 149, Total Cholesterol 214",
+      "Wearable data: sleep scores 63-82, resting heart rate 55-61, step counts 8.1k-14.2k",
+      "Workout recovery notes and device trend summaries available",
+      "Minimal medical record context beyond wearable-linked coaching notes",
+    ],
+    reducedPacket: [
+      "Age: 38",
+      "Sex: Male",
+      "LDL: 136",
+      "HDL: 47",
+      "Triglycerides: 149",
+      "Pattern: mixed wearable and lipid trend with moderate LDL elevation",
+    ],
+    broaderExport: [
+      "38M with limited labs and extensive wearable trends",
+      "Latest panel: LDL 136, HDL 47, Triglycerides 149, Total Cholesterol 214",
+      "Wearable summary: sleep variability, resting HR, and activity trend",
+    ],
+    contextUsedByLane: {
+      Deterministic: ["Wearable and lab trend retrieval", "Structured summaries"],
+      Private: ["Wearable patterns and limited labs inside Consentext"],
+      "Private+": ["Reduced wearable plus latest-lab packet"],
+      "Max Intelligence": ["Broader governed wearable and lab summary"],
+      "Off-Board": ["User-disclosed wearable and lab context outside Consentext"],
+    },
+  },
+};
+
+const TRUST_PREFERENCES = {
+  conservative: {
+    label: "Conservative",
+    note: "Biases routing toward the more private adjacent lane when possible.",
+    adjustments: {
+      Deterministic: 2.0,
+      Private: 1.2,
+      "Private+": -0.5,
+      "Max Intelligence": -1.2,
+      "Off-Board": 0,
+    },
+  },
+  balanced: {
+    label: "Balanced",
+    note: "Uses the standard routing logic from the canon.",
+    adjustments: {
+      Deterministic: 0,
+      Private: 0,
+      "Private+": 0,
+      "Max Intelligence": 0,
+      "Off-Board": 0,
+    },
+  },
+  "maximum-capability": {
+    label: "Maximum Capability",
+    note: "Biases toward higher-capability governed lanes when multiple routes are plausible.",
+    adjustments: {
+      Deterministic: -0.6,
+      Private: -0.3,
+      "Private+": 0.8,
+      "Max Intelligence": 1.4,
+      "Off-Board": 0,
+    },
+  },
+};
 
 const vaultContext = [
   "Detailed lab history and biomarker panels",
@@ -258,7 +404,7 @@ const laneDefinitions = {
     provider: "Deterministic engine",
     dataScope: "Internal structured data",
     exposureDecision: "Structured internal logic is sufficient, so no AI access is granted.",
-    processingMode: "No AI / deterministic retrieval",
+    processingMode: "Deterministic engine",
     laneMeaning: "Structured retrieval, calculations, timelines, and non-AI summaries.",
     canonicalMessage: "This request can be handled without AI.",
     exportPacket: ["No external export", "Structured retrieval only"],
@@ -298,7 +444,7 @@ const laneDefinitions = {
     provider: "Qwen",
     dataScope: "Internal protected context",
     exposureDecision: "Sensitive personal context requires a protected internal lane with no external export.",
-    processingMode: "Protected internal AI",
+    processingMode: "Internal protected AI",
     laneMeaning: "Protected explanation of personal health context inside Consentext.",
     canonicalMessage: "This request uses protected internal AI. Sensitive data stays inside Consentext.",
     exportPacket: ["No external export", "Sensitive personal context remains inside Consentext"],
@@ -335,7 +481,7 @@ const laneDefinitions = {
     provider: "External AI",
     dataScope: "Reduced context packet",
     exposureDecision: "General guidance is allowed, but only after gateway minimization creates a reduced packet.",
-    processingMode: "Reduced-context external AI",
+    processingMode: "External AI reduced context",
     laneMeaning: "General guidance from a minimized packet rather than the full record.",
     canonicalMessage: "This request uses a reduced context packet for external AI assistance.",
     exportPacket: canonicalReducedPacket,
@@ -379,7 +525,7 @@ const laneDefinitions = {
     provider: "External AI",
     dataScope: "Broader governed context",
     exposureDecision: "Broader comparative or research-oriented reasoning justifies the highest-capability governed lane.",
-    processingMode: "High-capability governed AI",
+    processingMode: "External AI governed comparison",
     laneMeaning: "Broader governed comparison, research, and open-ended reasoning.",
     canonicalMessage: "This request uses the highest-capability governed AI lane.",
     exportPacket: [
@@ -588,7 +734,7 @@ let actionStatusTimer = null;
 let activeSourceDocument = null;
 
 function normalizeText(value) {
-  return value
+  return String(value ?? "")
     .toLowerCase()
     .replace(/[^a-z0-9+ ]+/g, " ")
     .replace(/\s+/g, " ")
@@ -614,7 +760,7 @@ function repairMojibake(value) {
 }
 
 function sanitizeText(value) {
-  return repairMojibake(value)
+  return repairMojibake(String(value ?? ""))
     .replace(/â€“/g, "–")
     .replace(/â€”/g, "—")
     .replace(/â€œ|â€/g, '"')
@@ -628,13 +774,16 @@ function sanitizeText(value) {
 }
 
 function escapeHtml(value) {
-  return value
+  return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 }
 
 function renderList(container, items) {
+  if (!container) {
+    return;
+  }
   container.innerHTML = items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 }
 
@@ -748,7 +897,72 @@ function renderPromptBank() {
 }
 
 function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return String(value ?? "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function getSelectedProfile() {
+  return PATIENT_PROFILES[patientProfileSelect?.value] || PATIENT_PROFILES["rich-54m"];
+}
+
+function getSelectedTrustPreference() {
+  return TRUST_PREFERENCES[trustPreferenceSelect?.value] || TRUST_PREFERENCES.balanced;
+}
+
+function formatLines(lines) {
+  return (Array.isArray(lines) ? lines : [lines]).map((line) => String(line ?? "")).join("\n");
+}
+
+function getExportContextForLane(laneName, profile) {
+  if (laneName === "Deterministic") {
+    return {
+      badge: "Internal only",
+      badgeClass: "data-badge-deterministic",
+      lines: ["No data exported - internal only"],
+    };
+  }
+
+  if (laneName === "Private") {
+    return {
+      badge: "Internal protected AI",
+      badgeClass: "data-badge-private",
+      lines: ["No data exported - processed internally by Qwen"],
+    };
+  }
+
+  if (laneName === "Private+") {
+    return {
+      badge: "Reduced Packet",
+      badgeClass: "data-badge-privateplus",
+      lines: profile.reducedPacket,
+    };
+  }
+
+  if (laneName === "Max Intelligence") {
+    return {
+      badge: "Governed Export",
+      badgeClass: "data-badge-max",
+      lines: profile.broaderExport,
+    };
+  }
+
+  return {
+    badge: "Outside Consentext",
+    badgeClass: "data-badge-offboard",
+    lines: [
+      "Direct disclosure outside Consentext",
+      "No minimization",
+      "No gateway-controlled packet",
+    ],
+  };
+}
+
+function calculateConfidence(selected, alternate, trustPreference) {
+  const selectedScore = Number(selected.adjustedScore ?? selected.score ?? 0);
+  const alternateScore = Number(alternate?.adjustedScore ?? alternate?.score ?? 0);
+  const scoreGap = Math.max(0, selectedScore - alternateScore);
+  const rawBase = 0.66 + scoreGap * 0.06;
+  const biasPenalty = trustPreference.label === "Balanced" ? 0 : 0.04;
+  return Math.max(0.58, Math.min(0.99, rawBase - biasPenalty)).toFixed(2);
 }
 
 function applySourceSearch() {
@@ -825,8 +1039,12 @@ function renderPromptSummaryLists() {
 }
 
 function renderSessionStatus() {
+  const profile = getSelectedProfile();
+  const trustPreference = getSelectedTrustPreference();
   const items = [
     `Mode: ${prototypeMode === "compare" ? "Compare" : "Recommended"}`,
+    `Profile: ${profile.label}`,
+    `Trust: ${trustPreference.label}`,
     `Demo: ${demoMode ? "On" : "Off"}`,
     `Scenario: ${activeScenario ? activeScenario.title : "None"}`,
     `History: ${interactionHistory.length}`,
@@ -878,6 +1096,12 @@ function renderScenarioPack() {
 function buildShareUrl() {
   const url = new URL(window.location.href);
   url.searchParams.set("request", requestInput.value.trim());
+  if (patientProfileSelect) {
+    url.searchParams.set("profile", patientProfileSelect.value);
+  }
+  if (trustPreferenceSelect) {
+    url.searchParams.set("trust", trustPreferenceSelect.value);
+  }
   url.searchParams.set("mode", prototypeMode);
   url.searchParams.set("demo", demoMode ? "1" : "0");
   if (activeScenario) {
@@ -1157,31 +1381,55 @@ function buildMatches(normalizedRequest) {
   });
 }
 
-function chooseResult(request) {
+function chooseResult(request, trustPreference) {
   const normalizedRequest = normalizeText(request.trim());
-  const matches = buildMatches(normalizedRequest);
-  const recommended = matches[0] || routingRules.find((rule) => rule.lane === "Private");
+  const matches = buildMatches(normalizedRequest)
+    .map((match) => {
+      const bias = trustPreference.adjustments[match.lane] ?? 0;
+      return {
+        ...match,
+        adjustedScore: match.score + bias,
+        bias,
+      };
+    })
+    .sort((a, b) => {
+      if (b.adjustedScore !== a.adjustedScore) {
+        return b.adjustedScore - a.adjustedScore;
+      }
+      if (b.score !== a.score) {
+        return b.score - a.score;
+      }
+      return a.lane.localeCompare(b.lane);
+    });
+
+  const recommended =
+    matches[0] ||
+    {
+      ...routingRules.find((rule) => rule.lane === "Private"),
+      score: 0,
+      adjustedScore: trustPreference.adjustments.Private ?? 0,
+      bias: trustPreference.adjustments.Private ?? 0,
+    };
 
   let alternate = matches.find((match) => match.lane !== recommended.lane);
   if (!alternate) {
     if (recommended.lane === "Private+") {
-      alternate = routingRules.find((rule) => rule.lane === "Max Intelligence");
+      alternate = { ...routingRules.find((rule) => rule.lane === "Max Intelligence"), score: 0, adjustedScore: trustPreference.adjustments["Max Intelligence"] ?? 0 };
     } else if (recommended.lane === "Max Intelligence") {
-      alternate = routingRules.find((rule) => rule.lane === "Private+");
+      alternate = { ...routingRules.find((rule) => rule.lane === "Private+"), score: 0, adjustedScore: trustPreference.adjustments["Private+"] ?? 0 };
     } else if (recommended.lane === "Deterministic") {
-      alternate = routingRules.find((rule) => rule.lane === "Private");
+      alternate = { ...routingRules.find((rule) => rule.lane === "Private"), score: 0, adjustedScore: trustPreference.adjustments.Private ?? 0 };
     } else {
-      alternate = routingRules.find((rule) => rule.lane === "Private+");
+      alternate = { ...routingRules.find((rule) => rule.lane === "Private+"), score: 0, adjustedScore: trustPreference.adjustments["Private+"] ?? 0 };
     }
   }
 
   return { normalizedRequest, matches, recommended, alternate };
 }
 
-function buildAuditRecord(request, selected, alternate) {
+function buildAuditRecord(request, selected, alternate, trustPreference, profile, confidence) {
   const lane = laneDefinitions[selected.lane];
   const externalExport = selected.lane === "Private+" || selected.lane === "Max Intelligence" || selected.lane === "Off-Board";
-  const confidence = Math.min(0.99, 0.55 + selected.score * 0.12).toFixed(2);
   return {
     timestamp: new Date().toISOString(),
     request,
@@ -1202,9 +1450,11 @@ function buildAuditRecord(request, selected, alternate) {
               : "Outside Consentext protections",
     export_packet_type: selected.lane === "Private+" ? "Reduced context packet" : selected.lane === "Max Intelligence" ? "Broader governed context" : "None",
     minimization_applied: selected.lane === "Private+",
-    trust_mode: prototypeMode === "compare" ? "Compare route" : "Recommended route",
+    trust_mode: `${prototypeMode === "compare" ? "Compare route" : "Recommended route"} / ${trustPreference.label}`,
     alternate_lane_considered: alternate ? alternate.lane : "None",
     classification_confidence: confidence,
+    patient_profile: profile.label,
+    trust_preference: trustPreference.label,
   };
 }
 
@@ -1517,6 +1767,8 @@ function exportSession() {
   downloadJson("consentext-ai-gateway-session.json", {
     exported_at: new Date().toISOString(),
     request: requestInput.value.trim(),
+    patient_profile: patientProfileSelect?.value || "rich-54m",
+    trust_preference: trustPreferenceSelect?.value || "balanced",
     mode: prototypeMode,
     demo_mode: demoMode,
     active_scenario: activeScenario ? activeScenario.title : null,
@@ -1538,6 +1790,14 @@ async function importSessionFromFile(file) {
 
     if (typeof session.request === "string") {
       requestInput.value = session.request;
+    }
+
+    if (typeof session.patient_profile === "string" && patientProfileSelect) {
+      patientProfileSelect.value = session.patient_profile;
+    }
+
+    if (typeof session.trust_preference === "string" && trustPreferenceSelect) {
+      trustPreferenceSelect.value = session.trust_preference;
     }
 
     if (session.mode === "recommended" || session.mode === "compare") {
@@ -1774,6 +2034,12 @@ function renderNarrativePanel({ request, selected, alternate, lane }) {
 function syncUrlState() {
   const url = new URL(window.location.href);
   url.searchParams.set("request", requestInput.value.trim());
+  if (patientProfileSelect) {
+    url.searchParams.set("profile", patientProfileSelect.value);
+  }
+  if (trustPreferenceSelect) {
+    url.searchParams.set("trust", trustPreferenceSelect.value);
+  }
   url.searchParams.set("mode", prototypeMode);
   url.searchParams.set("demo", demoMode ? "1" : "0");
   if (activeScenario) {
@@ -1787,12 +2053,22 @@ function syncUrlState() {
 function loadUrlState() {
   const url = new URL(window.location.href);
   const request = url.searchParams.get("request");
+  const profile = url.searchParams.get("profile");
+  const trust = url.searchParams.get("trust");
   const mode = url.searchParams.get("mode");
   const demo = url.searchParams.get("demo");
   const scenario = url.searchParams.get("scenario");
 
   if (request) {
     requestInput.value = request;
+  }
+
+  if (profile && patientProfileSelect && PATIENT_PROFILES[profile]) {
+    patientProfileSelect.value = profile;
+  }
+
+  if (trust && trustPreferenceSelect && TRUST_PREFERENCES[trust]) {
+    trustPreferenceSelect.value = trust;
   }
 
   if (mode === "recommended" || mode === "compare") {
@@ -1941,20 +2217,27 @@ function renderFeedbackPanel(context) {
 
 function runPrototype() {
   const request = requestInput.value.trim() || "Explain my latest lab results in plain English";
+  const profile = getSelectedProfile();
+  const trustPreference = getSelectedTrustPreference();
   if (activeScenario && activeScenario.prompt !== request) {
     activeScenario = null;
     saveActiveScenario();
     renderReviewContext();
   }
-  const result = chooseResult(request);
+  const result = chooseResult(request, trustPreference);
   const selected = result.recommended;
   const lane = laneDefinitions[selected.lane];
+  const confidence = calculateConfidence(selected, result.alternate, trustPreference);
+  const exportContext = getExportContextForLane(selected.lane, profile);
+  const alternateExplanation = result.alternate
+    ? `${result.alternate.lane}: considered because it also matched ${result.alternate.taskCategory.toLowerCase()}, but ${selected.lane} was chosen because ${selected.rationale.toLowerCase()}`
+    : "No alternate lane was needed for this request.";
 
   taskCategoryEl.textContent = selected.taskCategory;
   selectedLaneEl.textContent = selected.lane;
   selectedProviderEl.textContent = lane.provider;
   externalExportEl.textContent = selected.lane === "Private+" || selected.lane === "Max Intelligence" || selected.lane === "Off-Board" ? "Yes" : "No";
-  classificationConfidenceEl.textContent = Math.min(0.99, 0.55 + selected.score * 0.12).toFixed(2);
+  classificationConfidenceEl.textContent = confidence;
   resultSummaryEl.innerHTML = `
     <p class="mini-label">Decision summary</p>
     <p class="result-summary-line">
@@ -1964,25 +2247,31 @@ function runPrototype() {
   `;
   exposureDecisionEl.textContent = lane.exposureDecision;
   processingModeEl.textContent = lane.processingMode;
-  laneRationaleEl.textContent = selected.rationale;
+  laneRationaleEl.textContent = `${selected.rationale} Trust preference: ${trustPreference.note}`;
   canonicalMessageEl.textContent = lane.canonicalMessage;
-  dataScopeEl.textContent = lane.dataScope;
-  alternateLaneEl.textContent = result.alternate ? `${result.alternate.lane} - ${result.alternate.taskCategory}` : "No alternate lane was needed";
+  dataScopeEl.textContent = `${lane.dataScope}. Profile in use: ${profile.label}.`;
+  alternateLaneEl.textContent = alternateExplanation;
 
-  renderList(vaultContextEl, vaultContext);
+  renderList(vaultContextEl, profile.protectedContext);
   renderList(gatewayJobsEl, gatewayJobs);
   renderList(gapAuditEl, gapAuditItems);
   renderList(futureNotesEl, futureNotes);
   renderList(teamQuestionsEl, teamQuestions);
-  renderList(contextUsedEl, lane.contextUsed);
+  renderList(contextUsedEl, profile.contextUsedByLane[selected.lane] || lane.contextUsed);
   renderList(offboardWarningEl, offBoardConsequences);
   renderList(executionTraceEl, lane.executionTrace);
 
-  vaultPacketEl.textContent = richerVaultPacket.join("\n");
-  exportPacketEl.textContent = lane.exportPacket.join("\n");
-  responseOutputEl.innerHTML = lane.responseBuilder(request);
+  vaultPacketEl.textContent = formatLines(profile.protectedContext);
+  exportPacketEl.textContent = formatLines(exportContext.lines);
+  if (exportContextBadgeEl) {
+    exportContextBadgeEl.textContent = exportContext.badge;
+    exportContextBadgeEl.className = `data-badge ${exportContext.badgeClass}`;
+  }
+  responseOutputEl.innerHTML = lane.responseBuilder(
+    `${request} (${profile.label})`
+  );
   teamTakeawayEl.textContent = lane.teamTakeaway;
-  const auditRecord = buildAuditRecord(request, selected, result.alternate);
+  const auditRecord = buildAuditRecord(request, selected, result.alternate, trustPreference, profile, confidence);
   renderAuditSummary(auditRecord);
   auditReceiptEl.textContent = JSON.stringify(auditRecord, null, 2);
 
@@ -2023,6 +2312,12 @@ function runPrototype() {
 
 function resetPrototype() {
   requestInput.value = "What lifestyle changes might improve these lab results?";
+  if (patientProfileSelect) {
+    patientProfileSelect.value = "rich-54m";
+  }
+  if (trustPreferenceSelect) {
+    trustPreferenceSelect.value = "balanced";
+  }
   activeScenario = null;
   saveActiveScenario();
   renderReviewContext();
@@ -2048,6 +2343,12 @@ function resetAllState() {
   demoMode = false;
   routingRules = cloneRoutingRules(DEFAULT_ROUTING_RULES);
   requestInput.value = "What lifestyle changes might improve these lab results?";
+  if (patientProfileSelect) {
+    patientProfileSelect.value = "rich-54m";
+  }
+  if (trustPreferenceSelect) {
+    trustPreferenceSelect.value = "balanced";
+  }
   prototypeMode = "recommended";
 
   try {
@@ -2114,6 +2415,8 @@ function init() {
   });
   restoreRoutingRulesButton.addEventListener("click", restoreRoutingRules);
   demoModeToggleButton.addEventListener("click", () => setDemoMode(!demoMode));
+  patientProfileSelect?.addEventListener("change", runPrototype);
+  trustPreferenceSelect?.addEventListener("change", runPrototype);
   requestInput.addEventListener("keydown", (event) => {
     if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
       runPrototype();

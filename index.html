@@ -37,7 +37,7 @@
         <div class="hero-actions">
           <a href="#prototype" class="button button-primary">Open the live demo</a>
           <a href="./walkthrough.html" class="button button-secondary">Team walkthrough</a>
-          <a href="#overview" class="button button-secondary">Read the investment story</a>
+          <a href="./walkthrough.html" class="button button-secondary">View Full Documentation →</a>
         </div>
       </div>
       <aside class="hero-panel">
@@ -65,17 +65,50 @@
     </header>
 
     <nav class="section-nav">
-      <a href="./walkthrough.html">Walkthrough</a>
-      <a href="#overview">Overview</a>
-      <a href="#system">System</a>
-      <a href="#lanes">Lanes</a>
-      <a href="#routing">Routing</a>
       <a href="#prototype">Prototype</a>
-      <a href="#sources">Sources</a>
+      <a href="#lanes">Lanes</a>
+      <a href="./walkthrough.html">Walkthrough</a>
+      <a href="./walkthrough.html">Documentation</a>
       <button id="demo-mode-toggle" class="demo-mode-toggle" type="button" aria-pressed="false">Demo mode: Off</button>
     </nav>
 
     <main>
+      <section class="section quickstart-section">
+        <div class="quickstart-header">
+          <div>
+            <p class="eyebrow">Start here</p>
+            <h2>The clearest path through the homepage</h2>
+          </div>
+          <p class="quickstart-note">Run the prototype first. The sections below it are supporting explanation, routing context, and source proof.</p>
+        </div>
+        <div class="quickstart-grid">
+          <article class="card quickstart-card">
+            <span class="quickstart-index">1</span>
+            <div>
+              <p class="mini-label">Open the live flow</p>
+              <h3>Use the prototype before reading the reference sections</h3>
+              <p>Keep the default request or load a canonical prompt, then run the gateway.</p>
+            </div>
+          </article>
+          <article class="card quickstart-card">
+            <span class="quickstart-index">2</span>
+            <div>
+              <p class="mini-label">Focus on the decision</p>
+              <h3>Watch lane, rationale, packet behavior, and audit</h3>
+              <p>Those surfaces explain the product more clearly than the longer reference material below.</p>
+            </div>
+          </article>
+          <article class="card quickstart-card">
+            <span class="quickstart-index">3</span>
+            <div>
+              <p class="mini-label">Go deeper when needed</p>
+              <h3>Use Lanes, Routing, and Sources as backup proof</h3>
+              <p>They are there for questions, internal alignment, and evidence, not for the first read.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <section id="prototype" class="section">
         <div class="section-heading">
           <p class="eyebrow">Interactive prototype</p>
@@ -117,6 +150,24 @@
               </div>
             </div>
             <div id="session-status" class="session-status"></div>
+            <div class="prototype-control-grid">
+              <label class="routing-editor-field compact-field">
+                <span class="mini-label">Patient profile</span>
+                <select id="patient-profile" class="routing-editor-input">
+                  <option value="rich-54m">Rich Multi-Source (54M)</option>
+                  <option value="lab-47f">Simple Lab-Only (47F)</option>
+                  <option value="wearable-38m">Wearable-Heavy (38M)</option>
+                </select>
+              </label>
+              <label class="routing-editor-field compact-field">
+                <span class="mini-label">Trust preference</span>
+                <select id="trust-preference" class="routing-editor-input">
+                  <option value="balanced">Balanced</option>
+                  <option value="conservative">Conservative</option>
+                  <option value="maximum-capability">Maximum Capability</option>
+                </select>
+              </label>
+            </div>
             <label class="field-label" for="request-input">User request</label>
             <textarea id="request-input" class="request-input" rows="5">What lifestyle changes might improve these lab results?</textarea>
             <div class="prototype-actions">
@@ -199,40 +250,77 @@
                 <p id="alternate-lane">An alternate lane is shown when the request is close to another governed route.</p>
               </div>
             </div>
-            <div class="grid two-up prototype-panels">
-              <div class="card inset-card">
-                <p class="mini-label">Compare route view</p>
-                <div id="compare-route" class="compare-route"></div>
-              </div>
-              <div class="card inset-card">
-                <p class="mini-label">Gateway control jobs</p>
-                <ul id="gateway-jobs" class="dense-list">
-                  <li>Waiting for the gateway to load its control responsibilities.</li>
-                </ul>
-              </div>
-            </div>
-            <div class="grid two-up prototype-panels">
-              <div class="card inset-card">
-                <p class="mini-label">Vault context available</p>
-                <ul id="vault-context" class="dense-list">
-                  <li>Available after the prototype loads.</li>
-                </ul>
-              </div>
-              <div class="card inset-card">
-                <p class="mini-label">Context used by this lane</p>
-                <ul id="context-used" class="dense-list">
-                  <li>Will be populated by the selected route.</li>
-                </ul>
+            <div class="prototype-panels">
+              <div class="card inset-card grouped-panel">
+                <div class="grouped-panel-header">
+                  <p class="mini-label">Route review</p>
+                  <p class="grouped-panel-note">How the gateway explains and governs the chosen path.</p>
+                </div>
+                <div class="grouped-panel-grid grouped-panel-grid-two">
+                  <div class="subsurface">
+                    <p class="mini-label">Compare route view</p>
+                    <div id="compare-route" class="compare-route"></div>
+                  </div>
+                  <div class="subsurface">
+                    <p class="mini-label">Gateway control jobs</p>
+                    <ul id="gateway-jobs" class="dense-list">
+                      <li>Waiting for the gateway to load its control responsibilities.</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="grid two-up prototype-panels">
-              <div class="card inset-card">
-                <p class="mini-label">Richer Vault context</p>
-                <pre id="vault-packet" class="mini-pre">Waiting for route execution.</pre>
+            <div class="prototype-panels">
+              <div class="card inset-card grouped-panel">
+                <div class="grouped-panel-header">
+                  <p class="mini-label">Context boundary</p>
+                  <p class="grouped-panel-note">What the gateway can see versus what the selected lane is allowed to use.</p>
+                </div>
+                <div class="grouped-panel-grid grouped-panel-grid-two">
+                  <div class="subsurface">
+                    <p class="mini-label">Vault context available</p>
+                    <ul id="vault-context" class="dense-list">
+                      <li>Available after the prototype loads.</li>
+                    </ul>
+                  </div>
+                  <div class="subsurface">
+                    <p class="mini-label">Context used by this lane</p>
+                    <ul id="context-used" class="dense-list">
+                      <li>Will be populated by the selected route.</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-              <div class="card inset-card">
-                <p class="mini-label">Export packet</p>
-                <pre id="export-packet" class="mini-pre">No packet generated yet.</pre>
+            </div>
+            <div class="prototype-panels">
+              <div class="card inset-card full-span data-exposure-card">
+                <div class="grouped-panel-header">
+                  <div>
+                    <p class="mini-label">Data exposure</p>
+                    <h4>Store a lot, send a little</h4>
+                  </div>
+                  <p class="grouped-panel-note">This is the core gateway visual: what stays protected versus what, if anything, leaves Consentext.</p>
+                </div>
+                <div class="data-exposure-grid">
+                  <div class="data-panel">
+                    <div class="data-panel-head">
+                      <p class="mini-label">Full protected context</p>
+                      <span class="data-badge data-badge-protected">Shielded Vault</span>
+                    </div>
+                    <pre id="vault-packet" class="mini-pre">Waiting for route execution.</pre>
+                  </div>
+                  <div class="data-flow-indicator">
+                    <span class="data-flow-arrow">→</span>
+                    <p>Gateway filters and governs what can leave</p>
+                  </div>
+                  <div class="data-panel">
+                    <div class="data-panel-head">
+                      <p class="mini-label">Exported context</p>
+                      <span id="export-context-badge" class="data-badge">No export</span>
+                    </div>
+                    <pre id="export-packet" class="mini-pre">No packet generated yet.</pre>
+                  </div>
+                </div>
               </div>
               <div class="card inset-card full-span">
                 <p class="mini-label">Simulated response</p>
@@ -241,22 +329,30 @@
                 </div>
               </div>
             </div>
-            <div class="grid two-up prototype-panels">
-              <div class="card inset-card">
-                <p class="mini-label">Execution trace</p>
-                <ol id="execution-trace" class="dense-list">
-                  <li>Waiting for the gateway to classify the current request.</li>
-                </ol>
-              </div>
-              <div class="card inset-card">
-                <p class="mini-label">Team takeaway</p>
-                <p id="team-takeaway">The summary takeaway updates once a governed lane has been selected.</p>
+            <div class="prototype-panels">
+              <div class="card inset-card grouped-panel">
+                <div class="grouped-panel-header">
+                  <p class="mini-label">Decision review</p>
+                  <p class="grouped-panel-note">The operational path and the plain-language summary for the team.</p>
+                </div>
+                <div class="grouped-panel-grid grouped-panel-grid-two">
+                  <div class="subsurface">
+                    <p class="mini-label">Execution trace</p>
+                    <ol id="execution-trace" class="dense-list">
+                      <li>Waiting for the gateway to classify the current request.</li>
+                    </ol>
+                  </div>
+                  <div class="subsurface">
+                    <p class="mini-label">Team takeaway</p>
+                    <p id="team-takeaway">The summary takeaway updates once a governed lane has been selected.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </article>
         </div>
 
-        <div class="prototype-grid secondary-grid">
+        <div id="prototype-audit-grid" class="prototype-grid secondary-grid">
           <article class="card" id="rule-inspector-card">
             <div class="split-heading">
               <div>
@@ -273,14 +369,14 @@
             <div id="audit-summary" class="audit-summary"></div>
             <pre id="audit-receipt" class="audit-pre"></pre>
           </article>
-          <article class="card warning-card">
+          <article class="card warning-card" id="offboard-contrast-card">
             <p class="eyebrow">Contrast state</p>
             <h3>Off-board consequence</h3>
             <ul id="offboard-warning" class="dense-list"></ul>
           </article>
         </div>
 
-        <div class="prototype-grid">
+        <div class="prototype-grid" id="routing-editor-section">
           <article class="card" id="routing-editor-card">
             <div class="split-heading">
               <div>
@@ -346,7 +442,7 @@
           </article>
         </div>
 
-        <div class="prototype-grid">
+        <div class="prototype-grid" id="scenario-pack-section">
           <article class="card">
             <div class="split-heading">
               <div>
@@ -359,7 +455,7 @@
           </article>
         </div>
 
-        <div class="prototype-grid">
+        <div class="prototype-grid" id="founder-summary-section">
           <article class="card">
             <div class="split-heading">
               <div>
@@ -372,7 +468,7 @@
           </article>
         </div>
 
-        <div class="prototype-grid">
+        <div class="prototype-grid" id="narrative-section">
           <article class="card">
             <div class="split-heading">
               <div>
@@ -385,18 +481,18 @@
           </article>
         </div>
 
-        <div class="prototype-grid secondary-grid">
-          <article class="card">
+        <div class="prototype-grid secondary-grid" id="prototype-notes-section">
+          <article class="card" id="gap-audit-card">
             <p class="eyebrow">Gap audit</p>
             <h3>What I missed in the first version</h3>
             <ul id="gap-audit" class="dense-list"></ul>
           </article>
-          <article class="card">
+          <article class="card" id="future-notes-card">
             <p class="eyebrow">Forward look</p>
             <h3>Future boundary and context engine notes</h3>
             <ul id="future-notes" class="dense-list"></ul>
           </article>
-          <article class="card">
+          <article class="card" id="team-questions-card">
             <p class="eyebrow">Team questions</p>
             <h3>What this prototype should help answer</h3>
             <ul id="team-questions" class="dense-list"></ul>
@@ -404,10 +500,24 @@
         </div>
       </section>
 
-      <section id="overview" class="section">
+      <section class="section section-bridge">
+        <div class="bridge-card">
+          <div>
+            <p class="eyebrow">Reference layer</p>
+            <h2>The sections below are for explanation, validation, and proof</h2>
+          </div>
+          <p class="bridge-copy">
+            Once the audience has seen the prototype run, use the next sections to explain the broader product framing,
+            the lane model, the routing logic, and the original source material.
+          </p>
+        </div>
+      </section>
+
+      <section id="overview" class="section reference-section">
         <div class="section-heading">
           <p class="eyebrow">Why this exists</p>
           <h2>The gateway is a control system, not another AI feature</h2>
+          <p class="section-supporting-copy">Supporting context for after the live prototype run.</p>
         </div>
         <div class="grid two-up">
           <article class="card">
@@ -445,10 +555,11 @@
         </div>
       </section>
 
-      <section id="system" class="section">
+      <section id="system" class="section reference-section">
         <div class="section-heading">
           <p class="eyebrow">System framing</p>
           <h2>Consentext has three conceptual spaces</h2>
+          <p class="section-supporting-copy">Reference material for architecture and positioning questions.</p>
         </div>
         <div class="system-layout">
           <div class="flow-pill">User</div>
@@ -474,10 +585,11 @@
         </div>
       </section>
 
-      <section id="lanes" class="section">
+      <section id="lanes" class="section reference-section">
         <div class="section-heading">
           <p class="eyebrow">Exposure spectrum</p>
           <h2>Four governed lanes plus one contrast state</h2>
+          <p class="section-supporting-copy">Best read after the audience has seen a real route selected in the prototype.</p>
         </div>
         <div class="spectrum">
           <span>Most private</span>
@@ -538,10 +650,11 @@
         </div>
       </section>
 
-      <section id="routing" class="section">
+      <section id="routing" class="section reference-section">
         <div class="section-heading">
           <p class="eyebrow">Routing canon</p>
           <h2>Baseline rules, prompt bank, and audit model</h2>
+          <p class="section-supporting-copy">Reference layer for the routing logic and canonical prompts.</p>
         </div>
         <div class="grid two-up">
           <article class="card">
@@ -644,10 +757,11 @@
         </div>
       </section>
 
-      <section id="prototype-brief" class="section">
+      <section id="prototype-brief" class="section reference-section">
         <div class="section-heading">
           <p class="eyebrow">Prototype brief</p>
           <h2>What the next build should demonstrate</h2>
+          <p class="section-supporting-copy">Background context for internal alignment rather than first-pass viewing.</p>
         </div>
         <div class="grid three-up">
           <article class="card">
@@ -716,10 +830,11 @@
         </div>
       </section>
 
-      <section id="sources" class="section">
+      <section id="sources" class="section reference-section">
         <div class="section-heading">
           <p class="eyebrow">Source archive</p>
           <h2>Full extracted text from all four documents</h2>
+          <p class="section-supporting-copy">Use this when you need evidence, traceability, or direct source review.</p>
         </div>
         <div class="card source-intro">
           <p>
