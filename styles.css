@@ -418,8 +418,7 @@ li {
 }
 
 .inset-card > p:not(.mini-label),
-.inset-card li,
-.inset-card pre {
+.inset-card li {
   color: rgba(31, 36, 48, 0.88);
 }
 
@@ -873,6 +872,11 @@ li {
   background: rgba(31, 36, 48, 0.94);
   color: #f4efe4;
   min-height: 180px;
+}
+
+.prototype-output-card .inset-card .mini-pre,
+.audit-pre {
+  color: #f4efe4;
 }
 
 .audit-summary {

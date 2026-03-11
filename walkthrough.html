@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Gateway Team Walkthrough</title>
+  <link rel="stylesheet" href="./walkthrough.css">
+</head>
+<body>
+  <div class="walkthrough-shell">
+    <header class="walkthrough-hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Consentext | Team Walkthrough</p>
+        <h1>How the AI Gateway works, what it proves, and how to demo it</h1>
+        <p class="lede">
+          This page explains the website in plain language for teammates, operators, and stakeholders who need a fast
+          understanding of the product story, the live features, and the current project state.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="./index.html">Open the live prototype</a>
+          <a class="button button-secondary" href="#live-sequence">Follow the demo sequence</a>
+          <a class="button button-secondary" href="#current-state">See current state</a>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <p class="panel-label">One-line summary</p>
+        <p class="panel-quote">
+          The AI Gateway is the governed control layer between a user's health context and AI systems. It decides what
+          stays inside Consentext, what can be minimized, what can be sent out, and what should never happen off-board.
+        </p>
+        <div class="hero-facts">
+          <div class="fact-card">
+            <span class="mini-label">Primary job</span>
+            <strong>Classify, route, and audit every request.</strong>
+          </div>
+          <div class="fact-card">
+            <span class="mini-label">Why it matters</span>
+            <strong>It turns trust design into visible product behavior.</strong>
+          </div>
+          <div class="fact-card">
+            <span class="mini-label">Best use today</span>
+            <strong>Live stakeholder walkthroughs and founder review.</strong>
+          </div>
+        </div>
+      </aside>
+    </header>
+
+    <nav class="section-nav">
+      <a href="./index.html">Prototype</a>
+      <a href="#what-it-is">What it is</a>
+      <a href="#feature-map">Features</a>
+      <a href="#how-to-use">How to use</a>
+      <a href="#live-sequence">Demo sequence</a>
+      <a href="#current-state">Current state</a>
+      <a href="#next-steps">Next steps</a>
+    </nav>
+
+    <main>
+      <section id="what-it-is" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">What this website is</p>
+          <h2>A governed AI product demo, not just a landing page</h2>
+        </div>
+        <div class="grid two-up">
+          <article class="card">
+            <h3>Who it is for</h3>
+            <ul class="bullet-list">
+              <li>Founders explaining the product story to investors or partners.</li>
+              <li>Internal teammates learning the lane model and trust boundary.</li>
+              <li>Reviewers testing whether governance feels concrete and believable.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>What problem it solves</h3>
+            <ul class="bullet-list">
+              <li>Users should not have to choose between strong privacy and useful AI.</li>
+              <li>Health AI needs visible routing and exposure control, not hidden prompts.</li>
+              <li>Teams need a way to explain trust infrastructure as product behavior.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="feature-map" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Feature map</p>
+          <h2>What the site currently includes</h2>
+        </div>
+        <div class="grid three-up">
+          <article class="card">
+            <p class="mini-label">Core workflow</p>
+            <h3>Live routing prototype</h3>
+            <ul class="bullet-list">
+              <li>Free-text request box plus canonical prompt bank.</li>
+              <li>Recommended route and compare route modes.</li>
+              <li>Five lanes: Deterministic, Private, Private+, Max Intelligence, Off-Board.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <p class="mini-label">Governance proof</p>
+            <h3>Trust and audit surfaces</h3>
+            <ul class="bullet-list">
+              <li>Exposure decision, processing mode, rationale, and data scope.</li>
+              <li>Vault context versus reduced export packet.</li>
+              <li>Audit summary, receipt JSON, and persistent interaction history.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <p class="mini-label">Review tooling</p>
+            <h3>Founder and team evaluation</h3>
+            <ul class="bullet-list">
+              <li>Scenario pack for guided walkthroughs.</li>
+              <li>Founder feedback capture with lane sentiment rollup.</li>
+              <li>Share links, session export/import, and editable routing rules.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="grid two-up">
+          <article class="card">
+            <p class="mini-label">Knowledge layer</p>
+            <h3>Source archive and evidence browser</h3>
+            <ul class="bullet-list">
+              <li>Full extracted text from the source documents.</li>
+              <li>Document tabs, source search, match previews, and click-to-jump passage review.</li>
+              <li>Real source labels, file names, and document metadata.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <p class="mini-label">Presentation layer</p>
+            <h3>Demo and investor support</h3>
+            <ul class="bullet-list">
+              <li>Demo mode that hides heavy operator chrome.</li>
+              <li>Presenter talk track for the current routing decision.</li>
+              <li>Investor-oriented framing and walkthrough guidance.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="video-walkthrough" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Video walkthrough</p>
+          <h2>Exported narrated overview for asynchronous team onboarding</h2>
+        </div>
+        <div class="video-card">
+          <div class="video-copy">
+            <p>
+              This video uses the same product story as the page: what the gateway is, how to use the prototype, the
+              strongest features, the current state of the project, and the next steps for the team.
+            </p>
+            <ul class="bullet-list">
+              <li>AI-style narration generated locally</li>
+              <li>On-screen subtitles for each major point</li>
+              <li>Built in Remotion so it can be updated as the product changes</li>
+            </ul>
+          </div>
+          <video class="walkthrough-video" controls preload="metadata" src="./media/ai-gateway-0311-bg-walkthrough.mp4">
+            Your browser does not support embedded video playback.
+          </video>
+        </div>
+      </section>
+
+      <section id="how-to-use" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">How to use the website</p>
+          <h2>Recommended team workflow</h2>
+        </div>
+        <div class="steps">
+          <article class="step-card">
+            <span class="step-index">1</span>
+            <div>
+              <h3>Start with the live prototype</h3>
+              <p>Open the main page and keep the default sample request or load a scenario from the prompt bank.</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <span class="step-index">2</span>
+            <div>
+              <h3>Run the gateway</h3>
+              <p>Use the Run button to classify the request and populate lane, provider, exposure, packet, and response surfaces.</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <span class="step-index">3</span>
+            <div>
+              <h3>Read the output from top to bottom</h3>
+              <p>Decision summary first, then selected lane, rationale, packet behavior, compare route, and audit receipt.</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <span class="step-index">4</span>
+            <div>
+              <h3>Use compare and scenarios for discussion</h3>
+              <p>Compare mode is best for explaining why a route is chosen. Scenarios are best for repeatable demos and team reviews.</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <span class="step-index">5</span>
+            <div>
+              <h3>Capture feedback</h3>
+              <p>Use founder review, lane sentiment, and session export when the goal is evaluation rather than presentation.</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <span class="step-index">6</span>
+            <div>
+              <h3>Use the source archive when challenged</h3>
+              <p>Search the embedded source documents to show where the concepts, prompts, and design decisions came from.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="live-sequence" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Recommended live demo sequence</p>
+          <h2>A six-step walkthrough for teammates and stakeholders</h2>
+        </div>
+        <div class="timeline">
+          <article class="timeline-card">
+            <p class="mini-label">Step 1</p>
+            <h3>Frame the product</h3>
+            <p>Explain that this is a control layer for health AI, not another chatbot wrapper.</p>
+          </article>
+          <article class="timeline-card">
+            <p class="mini-label">Step 2</p>
+            <h3>Run a safe trust anchor request</h3>
+            <p>Use a Deterministic or Private scenario first so the audience understands that not every request should go external.</p>
+          </article>
+          <article class="timeline-card">
+            <p class="mini-label">Step 3</p>
+            <h3>Show the minimization story</h3>
+            <p>Use Private+ to compare richer vault context with the reduced export packet.</p>
+          </article>
+          <article class="timeline-card">
+            <p class="mini-label">Step 4</p>
+            <h3>Use compare mode</h3>
+            <p>Show why the chosen lane is preferred over the nearest alternative and what control is preserved.</p>
+          </article>
+          <article class="timeline-card">
+            <p class="mini-label">Step 5</p>
+            <h3>Prove governance</h3>
+            <p>Finish on execution trace, audit receipt, and the all-lanes snapshot view.</p>
+          </article>
+          <article class="timeline-card">
+            <p class="mini-label">Step 6</p>
+            <h3>Close with the strategic contrast</h3>
+            <p>Use the Off-Board scenario to show what disappears when a user bypasses the gateway.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="highlights" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Highlights</p>
+          <h2>The strongest parts of the current experience</h2>
+        </div>
+        <div class="grid two-up">
+          <article class="card">
+            <h3>What is working well</h3>
+            <ul class="bullet-list">
+              <li>The lane model is visible and distinct.</li>
+              <li>The site clearly shows that routing happens before model interaction.</li>
+              <li>The audit trail makes governance feel like product behavior rather than a hidden policy layer.</li>
+              <li>The scenario pack makes the demo repeatable for different audiences.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>What this makes easy to explain</h3>
+            <ul class="bullet-list">
+              <li>Why not every request should be treated the same.</li>
+              <li>Why minimization matters for adoption.</li>
+              <li>Why off-board AI use weakens trust and control.</li>
+              <li>Why Consentext is positioned as infrastructure, not just an interface.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="current-state" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Current state</p>
+          <h2>What this project is today</h2>
+        </div>
+        <div class="grid two-up">
+          <article class="card">
+            <p class="mini-label">Current maturity</p>
+            <h3>Interactive concept-review prototype</h3>
+            <p>
+              The site is a high-quality prototype that demonstrates routing logic, governance surfaces, demo scenarios,
+              source grounding, and presentation support. It is not a production AI gateway or integrated health product.
+            </p>
+          </article>
+          <article class="card">
+            <p class="mini-label">What it is good for right now</p>
+            <ul class="bullet-list">
+              <li>Investor walkthroughs</li>
+              <li>Internal product alignment</li>
+              <li>Founder review and lane evaluation</li>
+              <li>Explaining trust design to partners or early collaborators</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="next-steps" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Next steps</p>
+          <h2>What the team should do next</h2>
+        </div>
+        <div class="grid three-up">
+          <article class="card">
+            <p class="mini-label">Product</p>
+            <h3>Validate the lane model</h3>
+            <p>Use the prototype to confirm whether the five lanes feel intuitive, necessary, and strategically distinct.</p>
+          </article>
+          <article class="card">
+            <p class="mini-label">Trust design</p>
+            <h3>Clarify real governance boundaries</h3>
+            <p>Translate the simulated packet and routing behavior into concrete policy, provider, and system constraints.</p>
+          </article>
+          <article class="card">
+            <p class="mini-label">Go-to-market</p>
+            <h3>Use the walkthroughs as sales support</h3>
+            <p>Turn the same story into investor, advisor, design partner, and clinical collaboration demos.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="callout">
+          <div>
+            <p class="eyebrow">Recommended team takeaway</p>
+            <h2>The website proves the gateway story best when it is used as a guided demo, not a passive brochure.</h2>
+          </div>
+          <div class="hero-actions">
+            <a class="button button-primary" href="./index.html">Return to prototype</a>
+            <a class="button button-secondary" href="./index.html#sources">Open source archive</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

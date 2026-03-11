@@ -1,0 +1,19 @@
+{
+  "name": "ai-gateway-0311-bg-video",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.jsx",
+    "render": "remotion render src/index.jsx TeamWalkthrough ../media/ai-gateway-0311-bg-walkthrough.mp4",
+    "bundle": "remotion bundle src/index.jsx"
+  },
+  "dependencies": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.331"
+  },
+  "devDependencies": {
+    "@remotion/cli": "4.0.331"
+  }
+}

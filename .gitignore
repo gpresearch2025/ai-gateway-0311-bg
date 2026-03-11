@@ -4,5 +4,9 @@ Desktop.ini
 *.log
 *.tmp
 *.bak
+.vercel/
 .chrome-headless/
 .edge-headless/
+video/node_modules/
+
+.vercel

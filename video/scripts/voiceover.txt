@@ -1,0 +1,23 @@
+Welcome to the Consentext AI Gateway team walkthrough.
+
+The AI Gateway is the governed control layer for health AI. This prototype shows how Consentext classifies requests, controls exposure, routes work to the right lane, and keeps an auditable boundary between personal health context and AI systems.
+
+The website exists to solve one core problem. Users should not have to choose between strong privacy and useful AI. The gateway prevents all-or-nothing tradeoffs by deciding what stays inside Consentext, what can be minimized, and what should never go off-board.
+
+The live prototype follows the same flow every time. A reviewer enters a request or loads a canonical prompt, runs the gateway, and then reads the resulting task category, selected lane, provider, export state, confidence, packet behavior, and simulated output.
+
+The five lanes are the center of the product story. Deterministic handles structured retrieval without a model call. Private keeps sensitive explanation inside Consentext. Private Plus sends only a reduced export packet. Max Intelligence allows broader governed reasoning. Off-Board shows what is lost outside the gateway.
+
+The best team workflow is simple and repeatable. Start on the live prototype, load a scenario or use the default request, run the gateway, read the decision summary first, then use compare mode, packet panels, and the audit receipt to explain why the route makes sense.
+
+Private Plus is where the minimization story becomes concrete. The website shows richer vault context next to the reduced export packet so the audience can see the store-a-lot, send-a-little idea in action.
+
+The site provides more than a route label. Execution trace, audit summary, audit receipt, interaction history, and all-lanes compare snapshots make it possible to explain what the gateway did and why.
+
+This website also helps the team evaluate the concept. Founder-ready scenarios, feedback capture, lane sentiment rollup, editable routing rules, and the source archive make the site useful for internal review, not only presentation.
+
+This project is an interactive concept-review prototype today. It is strong enough for investor walkthroughs, internal alignment, and partner conversations, but it is still a prototype rather than a production gateway.
+
+The next work is product validation, governance hardening, and go-to-market use. The team should validate whether the lane model feels necessary, clarify the real governance boundaries behind each route, and turn the strongest walkthroughs into repeatable demos.
+
+The clearest way to use this website is as a guided explanation of governed AI. Use the walkthrough page for humans, the live prototype for demos, and the video for repeatable asynchronous onboarding.
